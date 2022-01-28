@@ -21,11 +21,12 @@
             },
             {
                "ingredient":"Sucre",
-               "quantite":30,
+               "quantity":30,
                "unit":"grammes"
             },
             {
-               "ingredient":"Glaçons"
+               "ingredient":"Glaçons",
+               "quantity":2
             }
          ],
          "time":10,
@@ -57,7 +58,7 @@
             },
             {
                "ingredient":"Carotte",
-               "quantite":1
+               "quantity":1
             },
             {
                "ingredient":"Citron Vert",
@@ -106,7 +107,7 @@
             {
                "ingredient":"Huile d'olive",
                "quantity":1,
-               "unit":"cuillères à soupe"
+               "unit":"cuillère à soupe"
             }
          ],
          "time":80,

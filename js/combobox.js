@@ -1,4 +1,3 @@
-console.clear();
 
 // get our DOM nodes
 const autocomplete = document.getElementById("autocomplete");
@@ -6,24 +5,63 @@ const searchInput = document.getElementById("searchInput");
 const suggestions = document.getElementById("suggestions");
 const tags = document.getElementById("tags");
 
+async function getRecipes() {
+  try {
+    const response = await fetch('./data/recipes.json', {
+      headers: {
+        'Content-Type': 'application/json',
+        Accept: 'application/json',
+      },
+    });
 
-// example data
-const FRUIT = [
-"apple",
-"apricot",
-"banana",
-"kumquat",
-"orange",
-"kiwi",
-"blackberry",
-"blueberry",
-"strawberry",
-"dragonfruit",
-"durian"];
+    const recipes = await response.json();
+    return recipes;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+function displayCards(recipes) {
+  const recipesSection = document.querySelector('.recipes');
+
+  recipes.forEach((item) =>{
+    const filterModel = cardRecipeFactory(item);
+    const cardRecipeDOM = filterModel.getCardRecipeDOM();
+    recipesSection.appendChild(cardRecipeDOM);
+  });
+}
 
 
+async function init() {
+  try {
+    // Récupère les datas des photographes
+    const { recipes } = await getRecipes();
+    displayCards(recipes);
+  } catch (err) {
+    console.error(err);
+  }
+}
+
+init();
+
+
+// example data 
+const FRUIT = [ 
+  "apple", 
+  "apricot", 
+  "banana", 
+  "kumquat", 
+  "orange", 
+  "kiwi", 
+  "blackberry", 
+  "blueberry", 
+  "strawberry", 
+  "dragonfruit", 
+  "durian"]; 
+   
+   
 // state to keep track of
-let FILTERED = FRUIT; // fruit is initially not filtered
+let FILTERED = FRUIT; // recipe is initially not filtered
 let CURRENT_INDEX = -1; // index of highlighted item—starts at -1 since 0 is the first item
 
 function openSuggestions() {
@@ -43,6 +81,7 @@ function closeSuggestions() {
 function selectItem() {
   const badge = document.createElement('div');
   badge.className="badge badge-pill bg-primary";
+  badge.setAttribute('data-selected', "true");
   badge.textContent = FILTERED[CURRENT_INDEX];
   const icon = document.createElement('i');
   icon.className="far fa-times-circle ms-2";
