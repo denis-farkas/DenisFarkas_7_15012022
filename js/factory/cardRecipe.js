@@ -1,10 +1,18 @@
 function cardRecipeFactory(data) {
-  const {id, name, servings, ingredients, time, description, appliance, ustensils} = data;
+  const {id, name, ingredients, time, description, appliance, ustensils} = data;
+
+ /* let ingredientArray = [];
+  for (let i in ingredients){
+    ingredientArray.push(ingredients[i].ingredient);
+  }*/
 
   function getCardRecipeDOM() {
     const card = document.createElement('div');
     card.className ="card";
     card.setAttribute('id', `${id}`);
+    //card.setAttribute(`data-ingredient`, `${ingredientArray}`);
+    card.setAttribute('data-appliance', `${appliance}`);
+    card.setAttribute('data-ustensils', `${ustensils}`);
 
     const cardBody =document.createElement('div');
     cardBody.className="card-body";

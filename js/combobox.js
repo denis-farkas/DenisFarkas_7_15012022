@@ -1,86 +1,95 @@
-
+/* Combo boxes*/
 // get our DOM nodes
-const autocomplete = document.getElementById("autocomplete");
-const searchInput = document.getElementById("searchInput");
-const suggestions = document.getElementById("suggestions");
+const autocompleteIngredient = document.getElementById("autocompleteIngredient");
+const autocompleteAppliance = document.getElementById("autocompleteAppliance");
+const autocompleteUstensil = document.getElementById("autocompleteUstensil");
+const searchInputIngredient = document.getElementById("searchInputIngredient");
+const searchInputAppliance = document.getElementById("searchInputAppliance");
+const searchInputUstensil = document.getElementById("searchInputUstensil");
+const suggestionsIngredient = document.getElementById("suggestionsIngredient");
+const suggestionsAppliance = document.getElementById("suggestionsAppliance");
+const suggestionsUstensil = document.getElementById("suggestionsUstensil");
 const tags = document.getElementById("tags");
 
-async function getRecipes() {
-  try {
-    const response = await fetch('./data/recipes.json', {
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json',
-      },
-    });
-
-    const recipes = await response.json();
-    return recipes;
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-function displayCards(recipes) {
-  const recipesSection = document.querySelector('.recipes');
-
-  recipes.forEach((item) =>{
-    const filterModel = cardRecipeFactory(item);
-    const cardRecipeDOM = filterModel.getCardRecipeDOM();
-    recipesSection.appendChild(cardRecipeDOM);
-  });
-}
 
 
-async function init() {
-  try {
-    // Récupère les datas des photographes
-    const { recipes } = await getRecipes();
-    displayCards(recipes);
-  } catch (err) {
-    console.error(err);
-  }
-}
-
-init();
-
-
-// example data 
-const FRUIT = [ 
-  "apple", 
-  "apricot", 
-  "banana", 
-  "kumquat", 
-  "orange", 
-  "kiwi", 
-  "blackberry", 
-  "blueberry", 
-  "strawberry", 
-  "dragonfruit", 
-  "durian"]; 
-   
-   
 // state to keep track of
-let FILTERED = FRUIT; // recipe is initially not filtered
+let FilteredIngredient = INGREDIENTS; 
+let FilteredAppliance = APPLIANCES;
+let FilteredIngredient = USTENSILS;
 let CURRENT_INDEX = -1; // index of highlighted item—starts at -1 since 0 is the first item
 
-function openSuggestions() {
-  suggestions.hidden = false; // show popup
-  autocomplete.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
-  window.addEventListener("click", closeSuggestions); // clicking the body should close the popup
+function openSuggestionsIngredient() {
+  suggestionsIngredient.hidden = false; // show popup
+  autocompleteIngredient.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
+  window.addEventListener("click", closeSuggestionsIngredient); // clicking the body should close the popup
 }
 
-function closeSuggestions() {
+function openSuggestionsAppliance() {
+  suggestionsAppliance.hidden = false; // show popup
+  autocompleteAppliance.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
+  window.addEventListener("click", closeSuggestionsAppliance); // clicking the body should close the popup
+}
+
+function openSuggestionsUstensil() {
+  suggestionsUstensil.hidden = false; // show popup
+  autocompleteUstensil.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
+  window.addEventListener("click", closeSuggestionsUstensil); // clicking the body should close the popup
+}
+
+
+function closeSuggestionsIngredient() {
   CURRENT_INDEX = -1; // reset back to initial value
-  suggestions.hidden = true; // hide popup
-  autocomplete.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
-  window.removeEventListener("click", closeSuggestions); // don't need this anymore once it's closed
+  suggestionsIngredient.hidden = true; // hide popup
+  autocompleteIngredient.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
+  window.removeEventListener("click", closeSuggestionsIngredient); // don't need this anymore once it's closed
   //searchInput.focus(); // focus should stay on the input
 }
 
-function selectItem() {
+
+function closeSuggestionsAppliance() {
+  CURRENT_INDEX = -1; // reset back to initial value
+  suggestionsAppliance.hidden = true; // hide popup
+  autocompleteAppliance.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
+  window.removeEventListener("click", closeSuggestionsAppliance); // don't need this anymore once it's closed
+  //searchInput.focus(); // focus should stay on the input
+}
+
+
+function closeSuggestionsUstensil() {
+  CURRENT_INDEX = -1; // reset back to initial value
+  suggestionsUstensil.hidden = true; // hide popup
+  autocompleteUstensil.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
+  window.removeEventListener("click", closeSuggestionsUstensil); // don't need this anymore once it's closed
+  //searchInput.focus(); // focus should stay on the input
+}
+
+
+function selectItemSuggestionIngredient() {
   const badge = document.createElement('div');
-  badge.className="badge badge-pill bg-primary";
+  badge.className="badge badge-pill ingredient";
+  badge.setAttribute('data-selected', "true");
+  badge.textContent = FILTERED[CURRENT_INDEX];
+  const icon = document.createElement('i');
+  icon.className="far fa-times-circle ms-2";
+  badge.appendChild(icon);
+  tags.appendChild(badge); //show result with badge
+}
+
+function selectItemSuggestionAppliance() {
+  const badge = document.createElement('div');
+  badge.className="badge badge-pill appliance";
+  badge.setAttribute('data-selected', "true");
+  badge.textContent = FILTERED[CURRENT_INDEX];
+  const icon = document.createElement('i');
+  icon.className="far fa-times-circle ms-2";
+  badge.appendChild(icon);
+  tags.appendChild(badge); //show result with badge
+}
+
+function selectItemSuggestionUstensil() {
+  const badge = document.createElement('div');
+  badge.className="badge badge-pill ustensil";
   badge.setAttribute('data-selected', "true");
   badge.textContent = FILTERED[CURRENT_INDEX];
   const icon = document.createElement('i');
@@ -100,29 +109,55 @@ function updateIndex(newIndex) {
 }
 
 // is called every time the user types into the input
-function handleInput(event) {
+function handleInputIngredient(event) {
   const userInput = event.target.value;
-  FILTERED = FRUIT.filter(f => f.includes(userInput)); // filter our fruit based on what was typed
+  FILTERED = INGREDIENTS.filter(f => f.includes(userInput)); // filter our fruit based on what was typed
   suggestions.innerHTML = ""; // clear out old suggestions
   FILTERED.forEach(createOption);
   if (userInput.length > 2) {
-    openSuggestions(); // show the suggestions if the user typed something
+    openSuggestionsIngredient(); // show the suggestions if the user typed something
   } else {
-    closeSuggestions(); // close them if user backspaces to empty the input
+    closeSuggestionsIngredient(); // close them if user backspaces to empty the input
   }
 }
 
-function createOption(name, index) {
+function handleInputAppliance(event) {
+  const userInput = event.target.value;
+  FILTERED = APPLIANCES.filter(f => f.includes(userInput)); 
+  suggestionsAppliance.innerHTML = ""; 
+  FILTERED.forEach(createOption);
+  if (userInput.length > 2) {
+    openSuggestionsAppliance(); 
+  } else {
+    closeSuggestionsAppliance(); 
+  }
+}
+
+function handleInputUstensil(event) {
+  const userInput = event.target.value;
+  FILTERED = USTENSILS.filter(f => f.includes(userInput)); 
+  suggestionsUstensil.innerHTML = ""; 
+  FILTERED.forEach(createOption);
+  if (userInput.length > 2) {
+    openSuggestionsUstensil(); 
+  } else {
+    closeSuggestionsUstensil(); 
+  }
+}
+
+function createOptionIngredient(name, index) {
   const li = document.createElement("li");
   li.id = `option-${index}`; // we'll need this ID to track which one is highlighted
   li.role = "option"; // necessary for any children of a role="listbox"
   li.textContent = name;
   li.addEventListener("mouseover", () => updateIndex(index));
   li.addEventListener("click", selectItem);
-  suggestions.appendChild(li);
+  suggestionsIngredient.appendChild(li);
 }
 
-searchInput.addEventListener("input", handleInput);
+searchInputIngredient.addEventListener("input", handleInputIngredient);
+searchInputAppliance.addEventListener("input", handleInputAppliance);
+searchInputUstensil.addEventListener("input", handleInputUstensil);
 
 function highlightNext() {
   const newIndex = (CURRENT_INDEX + 1) % FILTERED.length; // loops back to the first item after the last
