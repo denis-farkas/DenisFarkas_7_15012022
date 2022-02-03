@@ -1,8 +1,29 @@
-@media (min-width: 1300px) {
+@media (min-width: 1320px) {
   .container {
-    max-width: 1240px;
+    max-width: 1320px;
   }
 }
+
+.precise_search{
+  display:flex;
+  justify-content: start;
+  padding-right:1rem;
+}
+
+.recipes{
+  display:flex;
+  justify-content: space-between;
+}
+
+.recipes.container{
+  margin: 0 auto;
+  padding: 0 0;
+}
+
+.row >*{
+  padding: 0 0;
+}
+
 .brand {
   display: flex;
   justify-content: center;
@@ -55,7 +76,7 @@
 }
 
 .filters {
-  padding: 1rem 0;
+  padding: 1rem 1rem;
 }
 
 
@@ -99,7 +120,7 @@ ul {
 
 
 .searchInput {
-  width: 140px;
+  width: 100px;
   border:none;
   outline:none;
   padding: 0.2rem 0.5rem;
@@ -168,7 +189,7 @@ ul {
 .card{
   width: 380px;
   height: 364px;
-  margin: 2rem 2rem;
+  margin: 1rem 1rem;
 }
 
 .card-body{
@@ -180,15 +201,18 @@ ul {
 .heading{
   display: flex;
   justify-content: space-between;
-
+  margin: 0 0.5rem;
 }
 
 .heading_left{
   width:62%;
+  margin-right: 8%;
+  line-height: 20px;
 }
 
 .heading_right{
   width:30%;
+  text-align: end;
 }
 
 .card-title{
@@ -207,6 +231,11 @@ ul {
 .fa-clock{
   width:20px;
   height:20px;
+  margin-right:0.2rem;
+}
+
+.specifications{
+  margin: 0.7rem 0.5rem;
 }
 
 .ingredients{
@@ -226,6 +255,11 @@ ul {
     max-height: 109px;
     text-overflow: ellipsis;
     overflow: hidden;
+}
+
+.filterButton{
+  width: 50px;
+  text-align: right;
 }
 
 

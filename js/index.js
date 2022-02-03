@@ -62,6 +62,7 @@ function search(){
       checkAppliance = false;
       checkUstensils = false;
 
+      const ingredientArray = allCards[i].dataset.ingredient.split(',');
       const applianceArray = allCards[i].dataset.appliance.split(',');
       const ustensilsArray = allCards[i].dataset.ustensils.split(',');
 

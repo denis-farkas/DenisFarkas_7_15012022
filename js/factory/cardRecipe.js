@@ -1,27 +1,27 @@
 function cardRecipeFactory(data) {
   const {id, name, ingredients, time, description, appliance, ustensils} = data;
 
- /* let ingredientArray = [];
+ let ingredientArray = [];
   for (let i in ingredients){
     ingredientArray.push(ingredients[i].ingredient);
-  }*/
+  }
 
   function getCardRecipeDOM() {
     const card = document.createElement('div');
     card.className ="card";
     card.setAttribute('id', `${id}`);
-    //card.setAttribute(`data-ingredient`, `${ingredientArray}`);
+    card.setAttribute(`data-ingredient`, `${ingredientArray}`);
     card.setAttribute('data-appliance', `${appliance}`);
     card.setAttribute('data-ustensils', `${ustensils}`);
-
-    const cardBody =document.createElement('div');
-    cardBody.className="card-body";
-    card.appendChild(cardBody);
 
     const image = document.createElement('img');
     image.setAttribute('src', 'assets/images/imageneutre.png');
     image.setAttribute('alt', 'image recette');
-    cardBody.appendChild(image);
+    card.appendChild(image);
+
+    const cardBody =document.createElement('div');
+    cardBody.className="card-body";
+    card.appendChild(cardBody);
 
     const heading = document.createElement('div');
     heading.className="row heading";
@@ -49,7 +49,7 @@ function cardRecipeFactory(data) {
     heading_right.appendChild(duration);
 
     const specifications = document.createElement('div');
-    specifications.className= "row";
+    specifications.className= "specifications row";
     cardBody.appendChild(specifications);
     const component = document.createElement('div');
     component.className = "ingredients col-6";
