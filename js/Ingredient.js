@@ -1,28 +1,57 @@
 const autocompleteIngredient = document.getElementById("autocompleteIngredient");
 const searchInputIngredient = document.getElementById("searchInputIngredient");
 const suggestionsIngredient = document.getElementById("suggestionsIngredient");
-const tags = document.getElementById("tags");
+//const tags = document.getElementById("tags");
 
 
-let filterIngredients;
+function getFiltered(item){
+  let filteredIngredient = [];
+  let filteredUstensil = [];
+  let filteredAppliance = [];
 
-allCards = document.querySelectorAll('.card');
+  allCards = document.querySelectorAll(".card");
 
-filterIngredients= searchInputIngredient.value.toUpperCase();
-
-function getfilteredIngredients(){
-  let filteredIngredients=[];
-  console.log(filteredIngredients);
   for(let i = 0; i < allCards.length; i++){
-    const ingredientArray= allCards[i].dataset.ingredient.split(',');
-    console.log(ingredientArray);
-          for(j=0; j <ingredientArray.length; j++){
-           filteredIngredients.push(ingredientArray[j])
-          }       
+    if (allCards[i].dataset.choice === "yes"){
+      if(item === "ingredient"){
+        ingredients= allCards[i].dataset.ingredient.split(',');
+        for (const j in ingredients) {
+          if(!filteredIngredient.includes(ingredients[j])){
+            filteredIngredient.push(ingredients[j]);
+          }
+        }     
+      }else if(item ==="ustensil"){
+        ustensils= allCards[i].dataset.ustensils.split(',');
+        for (const j in ustensils) {
+          if(!filteredUstensil.includes(ustensils[j])){
+            filteredUstensil.push(ustensils[j]);
+          }
+        }   
+      }else if(item ==="appliance"){
+        appliance= allCards[i].dataset.appliance.split(',');
+        for (const j in appliance) {
+          if(!filteredAppliance.includes(appliance[j])){
+            filteredAppliance.push(appliance[j]);
+          }
+        }   
+      }
+
+    }
   }
-return filteredIngredients;    
+  console.log(filteredIngredient)
 }
 
+function createOptionIngredient(filtered) {
+  const li = document.createElement("li");
+  li.id = `option-${index}`; // we'll need this ID to track which one is highlighted
+  li.role = "option"; // necessary for any children of a role="listbox"
+  li.textContent = name;
+  li.addEventListener("mouseover", () => updateIndex(index));
+  li.addEventListener("click", selectIngredient);
+  suggestionsIngredient.appendChild(li);
+}
+
+filterIngredients= searchInputIngredient.value.toUpperCase();
 
       function openSuggestionsIngredient() {
         suggestionsIngredient.hidden = false; // show popup
@@ -73,15 +102,7 @@ function handleInputIngredient(event) {
   }
 }
 
-  function createOptionIngredient(name, index) {
-    const li = document.createElement("li");
-    li.id = `option-${index}`; // we'll need this ID to track which one is highlighted
-    li.role = "option"; // necessary for any children of a role="listbox"
-    li.textContent = name;
-    li.addEventListener("mouseover", () => updateIndex(index));
-    li.addEventListener("click", selectIngredient);
-    suggestionsIngredient.appendChild(li);
-  }
+  
 
   searchInputIngredient.addEventListener("input", handleInputIngredient);
 

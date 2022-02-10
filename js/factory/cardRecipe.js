@@ -1,11 +1,21 @@
-export default function cardRecipeFactory(data) {
+function cardRecipeFactory(data) {
   const { id, name, ingredients, time, description, appliance, ustensils } =
     data;
+
+  let quantity;
+  let unit;
+
+  const ingredientArray = [];
+  for (const i in ingredients) {
+  ingredientArray.push(ingredients[i].ingredient);
+  }
 
   function getCardRecipeDOM() {
     const card = document.createElement('div');
     card.className = 'card';
     card.setAttribute('id', `${id}`);
+    card.setAttribute('data-choice', 'true');
+    card.setAttribute('data-ingredient', `${ingredientArray}`);
     card.setAttribute('data-appliance', `${appliance}`);
     card.setAttribute('data-ustensils', `${ustensils}`);
 
@@ -53,23 +63,26 @@ export default function cardRecipeFactory(data) {
     listIngredients.className = 'list_ingredients';
     ingredients.forEach((item) => {
       const line = document.createElement('li');
-      line.className = 'card-text';
+      line.className = 'card-text display';
+
       if (item.quantity === undefined) {
-        item.quantity = '';
+        quantity = '';
+      } else {
+        quantity = item.quantity;
       }
       if (item.unit === 'grammes') {
-        item.unit = 'g';
+        unit = 'g';
+      } else if (item.unit === 'cuillère à soupe') {
+        unit = 'cuillère';
+      } else if (item.unit === 'cuillères à soupe') {
+        unit = 'cuillères';
+      } else if (item.unit === undefined) {
+        unit = '';
+      } else {
+        unit = item.unit;
       }
-      if (item.unit === 'cuillère à soupe') {
-        item.unit = 'cuillère';
-      }
-      if (item.unit === 'cuillères à soupe') {
-        item.unit = 'cuillères';
-      }
-      if (item.unit === undefined) {
-        item.unit = '';
-      }
-      line.textContent = `${item.ingredient}: ${item.quantity} ${item.unit}`;
+
+      line.textContent = `${item.ingredient}: ${quantity} ${unit}`;
       listIngredients.appendChild(line);
     });
     component.appendChild(listIngredients);

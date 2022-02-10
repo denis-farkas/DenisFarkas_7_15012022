@@ -2,20 +2,20 @@
   "name": "les-petits-plats",
   "version": "1.0.0",
   "description": "Rien à installer ici, il suffit d'ouvrir le fichier `index.html`.",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/denis-farkas/Front-End-Fisheye.git"
+    "url": "git+https://github.com/denis-farkas/DenisFarkas_7_15012022.git"
   },
   "author": "denis farkas",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/denis-farkas/Front-End-Fisheye/issues"
+    "url": "https://github.com/denis-farkas/DenisFarkas_7_15012022/issues"
   },
-  "homepage": "https://github.com/denis-farkas/Front-End-Fisheye#readme",
+  "homepage": "https://github.com/denis-farkas/DenisFarkas_7_15012022#readme",
   "devDependencies": {
     "eslint": "^8.7.0",
     "eslint-config-airbnb-base": "^15.0.0",

@@ -17,6 +17,7 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "prettier/prettier": "error"
+        "prettier/prettier": "error",
+        "import/extensions":  "always"
     }
 }

@@ -11,8 +11,6 @@ const suggestionsAppliance = document.getElementById("suggestionsAppliance");
 const suggestionsUstensil = document.getElementById("suggestionsUstensil");
 const tags = document.getElementById("tags");
 
-
-
 // state to keep track of
 let FilteredIngredient = INGREDIENTS; 
 let FilteredAppliance = APPLIANCES;
