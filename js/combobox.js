@@ -1,20 +1,14 @@
 /* Combo boxes*/
 // get our DOM nodes
-const autocompleteIngredient = document.getElementById("autocompleteIngredient");
-const autocompleteAppliance = document.getElementById("autocompleteAppliance");
-const autocompleteUstensil = document.getElementById("autocompleteUstensil");
 const searchInputIngredient = document.getElementById("searchInputIngredient");
 const searchInputAppliance = document.getElementById("searchInputAppliance");
 const searchInputUstensil = document.getElementById("searchInputUstensil");
-const suggestionsIngredient = document.getElementById("suggestionsIngredient");
-const suggestionsAppliance = document.getElementById("suggestionsAppliance");
-const suggestionsUstensil = document.getElementById("suggestionsUstensil");
-const tags = document.getElementById("tags");
 
 // state to keep track of
-let FilteredIngredient = INGREDIENTS; 
-let FilteredAppliance = APPLIANCES;
-let FilteredIngredient = USTENSILS;
+let filteredIngredient =  JSON.parse(localStorage.getItem('filteredIngredient'));  
+let filteredAppliance = JSON.parse(localStorage.getItem('filteredAppliance'));  
+let filteredUstensil = JSON.parse(localStorage.getItem('filteredUstensil'));  
+console.log(filteredIngredient);
 let CURRENT_INDEX = -1; // index of highlighted item—starts at -1 since 0 is the first item
 
 function openSuggestionsIngredient() {
@@ -109,7 +103,7 @@ function updateIndex(newIndex) {
 // is called every time the user types into the input
 function handleInputIngredient(event) {
   const userInput = event.target.value;
-  FILTERED = INGREDIENTS.filter(f => f.includes(userInput)); // filter our fruit based on what was typed
+  FILTERED = filteredIngredient.filter(f => f.includes(userInput)); // filter our fruit based on what was typed
   suggestions.innerHTML = ""; // clear out old suggestions
   FILTERED.forEach(createOption);
   if (userInput.length > 2) {
@@ -121,7 +115,7 @@ function handleInputIngredient(event) {
 
 function handleInputAppliance(event) {
   const userInput = event.target.value;
-  FILTERED = APPLIANCES.filter(f => f.includes(userInput)); 
+  FILTERED = filteredAppliance.filter(f => f.includes(userInput)); 
   suggestionsAppliance.innerHTML = ""; 
   FILTERED.forEach(createOption);
   if (userInput.length > 2) {
@@ -133,7 +127,7 @@ function handleInputAppliance(event) {
 
 function handleInputUstensil(event) {
   const userInput = event.target.value;
-  FILTERED = USTENSILS.filter(f => f.includes(userInput)); 
+  FILTERED = filteredUstensil.filter(f => f.includes(userInput)); 
   suggestionsUstensil.innerHTML = ""; 
   FILTERED.forEach(createOption);
   if (userInput.length > 2) {
@@ -143,15 +137,7 @@ function handleInputUstensil(event) {
   }
 }
 
-function createOptionIngredient(name, index) {
-  const li = document.createElement("li");
-  li.id = `option-${index}`; // we'll need this ID to track which one is highlighted
-  li.role = "option"; // necessary for any children of a role="listbox"
-  li.textContent = name;
-  li.addEventListener("mouseover", () => updateIndex(index));
-  li.addEventListener("click", selectItem);
-  suggestionsIngredient.appendChild(li);
-}
+
 
 searchInputIngredient.addEventListener("input", handleInputIngredient);
 searchInputAppliance.addEventListener("input", handleInputAppliance);
