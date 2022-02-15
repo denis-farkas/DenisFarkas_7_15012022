@@ -19,13 +19,25 @@ function getOptionsIngredients(collection) {
 
     localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));    
     suggestionsIngredient.innerHTML = "";
+    if(ingredientArray.length > 10){
+      let factor = (ingredientArray.length/10);
+      console.log(factor);
+      if(factor > 1 && factor <= 2){
+        suggestionsIngredient.classList.remove('toomuch');
+        suggestionsIngredient.classList.remove('various3');
+        suggestionsIngredient.classList.add('various2');
+      }else if(factor > 2){
+        suggestionsIngredient.classList.add('various3');
+        suggestionsIngredient.classList.add('toomuch');
+      }
+    }
     for(i=0; i<ingredientArray.length; i++){
       const li = document.createElement("li");
         li.id = 'optionIngredient-'+i; // we'll need this ID to track which one is highlighted
         li.role = "option"; // necessary for any children of a role="listbox"
         li.textContent = ingredientArray[i];
         li.className='option Ingredient';
-        li.addEventListener("mouseover", () => updateIndex(index));
+        li.addEventListener("mouseover", () => updateIndex(i));
         li.addEventListener("click", selectItemSuggestionIngredient);
         suggestionsIngredient.appendChild(li);  
     }
@@ -42,27 +54,21 @@ function searchIngredient(filter){
         for (let j = 0; j < filteredRecipes[i].ingredients.length; j += 1) {
           ingredientValue = filteredRecipes[i].ingredients[j].ingredient.toUpperCase();
           if (ingredientValue.includes(filter)) {
-            checkIngredient = true;
+            ingredientFiltered.push(filteredRecipes[i].ingredients[j].ingredient);
           }
         }
-        if (checkIngredient) {
-          ingredientFiltered.push(filteredRecipes[i]);
-        }
       }
+  }
     console.log(ingredientFiltered);
-    resetDisplayFilters();
-    getOptionsIngredients(ingredientFiltered);
-    getOptionsAppliance(ingredientFiltered);
-    getOptionsUstensils(ingredientFiltered);
     localStorage.setItem('Repository', JSON.stringify(ingredientFiltered));       
   }
-}
+
 
 
 function openSuggestionsIngredient() {
     suggestionsIngredient.hidden = false; // show popup
     autocompleteIngredient.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
-    window.addEventListener("click", closeSuggestionsIngredient); // clicking the body should close the popup
+    //window.addEventListener("click", closeSuggestionsIngredient); // clicking the body should close the popup
 }
 
 
@@ -99,7 +105,7 @@ function handleInputIngredient(event) {
 function updateIndex(newIndex) {
   const prevIndex = CURRENT_INDEX;
   CURRENT_INDEX = newIndex;
-  autocomplete.setAttribute("aria-activedescendant", CURRENT_INDEX); // tells assistive-tech which li is highlighted
+  autocompleteIngredient.setAttribute("aria-activedescendant", CURRENT_INDEX); // tells assistive-tech which li is highlighted
   const prevLi = document.getElementById(`option-${prevIndex}`);
   const currentLi = document.getElementById(`option-${CURRENT_INDEX}`);
   if (prevLi) prevLi.classList.remove("current"); // remove prev li background
