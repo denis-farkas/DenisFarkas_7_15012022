@@ -3,27 +3,12 @@ const autocompleteAppliance = document.getElementById('autocompleteAppliance');
 const searchInputAppliance = document.getElementById("searchInputAppliance");
 
 
-function getOptionsAppliance(collection) {
-  let applianceArray =[];
-  for (i=0; i <collection.length; i++){
-    if(!applianceArray.includes(collection[i].appliance)){
-      applianceArray.push(collection[i].appliance);
-    }
-  }
-  
-  for(i=0; i <applianceArray.length; i++){
-    const li = document.createElement("li");
-      li.id = 'optionAppliance-'+i; // we'll need this ID to track which one is highlighted
-      li.role = "option"; // necessary for any children of a role="listbox"
-      li.textContent = applianceArray[i];
-      li.className='option Appliance';
-      li.addEventListener("mouseover", () => updateIndex(index));
-      li.addEventListener("click", selectItemSuggestionAppliance);
-      suggestionsAppliance.appendChild(li);  
-  }
-  
-  return applianceArray;
-}
+
+document.getElementById("applianceB").addEventListener('click', function (event){
+  openSuggestionsAppliance();
+  event.stopPropagation();
+})
+
 
 
 function openSuggestionsAppliance() {
@@ -34,10 +19,10 @@ function openSuggestionsAppliance() {
 
 function closeSuggestionsAppliance() {
   CURRENT_INDEX = -1; // reset back to initial value
-  suggestionsAppliance.hidden = true; // hide popup
-  autocompleteAppliance.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
-  window.removeEventListener("click", closeSuggestionsAppliance); // don't need this anymore once it's closed
-  //searchInput.focus(); // focus should stay on the input
+    suggestionsAppliance.hidden = true; // hide popup
+    autocompleteAppliance.setAttribute("aria-expanded", false); // tell assistive tech popup is hidden
+    window.removeEventListener("click", closeSuggestionsAppliance); // don't need this anymore once it's closed
+    //searchInput.focus(); // focus should stay on the input
 }
 
 

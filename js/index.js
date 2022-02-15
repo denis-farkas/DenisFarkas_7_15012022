@@ -23,6 +23,8 @@ function resetDisplayCards(){
   recipesSection.innerHTML = "";
 }
 
+
+
 function resetDisplayFilters(){
   suggestionsIngredient.innerHTML = "";
   suggestionsAppliance.innerHTML = "";
@@ -36,9 +38,6 @@ function init(){
   setCollection(recipes);
   let allRecipes = getCollection();
   displayCards(allRecipes);
-  getOptionsIngredients(allRecipes);
-  getOptionsAppliance(allRecipes);
-  getOptionsUstensils(allRecipes);
 }
 
 init();

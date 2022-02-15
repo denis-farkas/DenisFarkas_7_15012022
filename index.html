@@ -20,12 +20,8 @@
         <input type="text" class="search-input" placeholder="Rechercher un ingrédient, appareil, ustensiles ou une recette" name="" >
         <img src="assets/images/search.svg" class="search-img" alt="search">
     </div>
+    <div class="tags" id="tags"></div>
     <div class="precise_search">
-        <div
-         class="tags"
-         id="tags"
-         >
-        </div>
         <div class="filters row">
             <div
             id="autocompleteIngredient"
@@ -39,7 +35,7 @@
                     autocomplete="off"
                     placeholder="Ingrédients"
                     />
-                    <button class="filterButton ingredient" onclick="openSuggestionsIngredient()">
+                    <button class="filterButton ingredient" id="ingredientB">
                         <i class="fa fa-angle-down"></i>
                     </button>
                 </label>      
@@ -56,18 +52,15 @@
             id="autocompleteAppliance"
             class="autocomplete"
             role="combobox"
-            aria-autocomplete="list"
-            aria-controls="suggestionsAppliance"
-            aria-expanded="false"
             >
                 <label for="searchInputAppliance" class="appliance">
                     <input
                     id="searchInputAppliance"
                     class="searchInput appliance"
                     autocomplete="off"
-                    placeholder="Appareil"
+                    placeholder="Appareils"
                     />
-                    <button class="filterButton appliance">
+                    <button class="filterButton appliance" id="applianceB">
                         <i class="fa fa-angle-down"></i>
                     </button>
                 </label>      
@@ -81,12 +74,9 @@
             </div>
         
             <div
-            id="autocompleteUstentil"
+            id="ustensil"
             class="autocomplete"
             role="combobox"
-            aria-autocomplete="list"
-            aria-controls="suggestionsUstensil"
-            aria-expanded="false"
             >
                 <label for="searchInputUstensil" class="ustensil">
                     <input
@@ -95,7 +85,7 @@
                     autocomplete="off"
                     placeholder="Ustensiles"
                     />
-                    <button class="filterButton ustensil">
+                    <button class="filterButton ustensil" id="ustensilB">
                         <i class="fa fa-angle-down"></i>
                     </button>
                 </label>      

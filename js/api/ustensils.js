@@ -1,35 +1,15 @@
-const suggestionsUstensil = document.getElementById('suggestionsUstensil');
-const autocompleteUstensil = document.getElementById('autocompleteUstensil');
+const suggestionsUstensil = document.getElementById("suggestionsUstensil");
+const autocompleteUstensil = document.getElementById("ustensil");
 const searchInputUstensil = document.getElementById("searchInputUstensil");
 
-
-function getOptionsUstensils(collection) {
-  let ustensilArray = [];
-  for (i=0; i <collection.length; i++){
-    for(j=0; j <collection[i].ustensils.length; j++){
-      if(!ustensilArray.includes(collection[i].ustensils[j])){
-        ustensilArray.push(collection[i].ustensils[j]);
-      }
-    } 
-  }
-
-  localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));    
-
-  for(i=0; i <ustensilArray.length; i++){
-    const li = document.createElement("li");
-      li.id = 'optionUstensil-'+i; // we'll need this ID to track which one is highlighted
-      li.role = "option"; // necessary for any children of a role="listbox"
-      li.textContent = ustensilArray[i];
-      li.className='option Ustensil';
-      li.addEventListener("mouseover", () => updateIndex(index));
-      li.addEventListener("click", selectItemSuggestionUstensil);
-      suggestionsUstensil.appendChild(li);  
-  } 
-  return ustensilArray;  
-}
+document.getElementById("ustensilB").addEventListener('click', function (event){
+  openSuggestionsUstensil();
+  event.stopPropagation();
+})
 
 
 function openSuggestionsUstensil() {
+  
   suggestionsUstensil.hidden = false; // show popup
   autocompleteUstensil.setAttribute("aria-expanded", true); // tell assistive tech popup is shown
   window.addEventListener("click", closeSuggestionsUstensil); // clicking the body should close the popup
