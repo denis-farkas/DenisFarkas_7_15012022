@@ -28,6 +28,7 @@ function getOptionsIngredients(collection) {
 
     localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));    
     suggestionsIngredient.innerHTML = "";
+
     if(ingredientArray.length > 10){
       let factor = (ingredientArray.length/10);
       if(factor > 1 && factor <= 2){
@@ -39,6 +40,7 @@ function getOptionsIngredients(collection) {
         suggestionsIngredient.classList.add('toomuch');
       }
     }
+    
     for(i=0; i<ingredientArray.length; i++){
       const li = document.createElement("li");
         li.id = 'optionIngredient-'+i; 
@@ -60,6 +62,7 @@ function getOptionsAppliance(collection) {
   }
   
   localStorage.setItem('filteredAppliance', JSON.stringify(applianceArray)); 
+  suggestionsAppliance.innerHTML = "";
 
   if(applianceArray.length > 10){
     let factor = (applianceArray.length/10);
@@ -73,16 +76,16 @@ function getOptionsAppliance(collection) {
     }
   }
   
-  for(i=0; i <applianceArray.length; i++){
+  for(i=0; i < applianceArray.length; i++){
     const li = document.createElement("li");
       li.id = 'optionAppliance-'+i; 
       li.role = "option"; 
       li.textContent = applianceArray[i];
       li.className='option Appliance';
-      li.addEventListener("click", selectItemSuggestionAppliance);
-      suggestionsAppliance.appendChild(li);  
-  }
-  
+      li.setAttribute("onclick", 'selectAppliance(" '+li.textContent+'")');
+      console.log(li);
+      suggestionsAppliance.appendChild(li); 
+  } 
   return applianceArray;
 }
 
@@ -96,7 +99,9 @@ function getOptionsUstensils(collection) {
     } 
   }
 
-  localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));    
+  localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray)); 
+
+  suggestionsUstensil.innerHTML = "";
 
   if(ustensilArray.length > 10){
     let factor = (ustensilArray.length/10);
@@ -115,7 +120,7 @@ function getOptionsUstensils(collection) {
       li.role = "option"; 
       li.textContent = ustensilArray[i];
       li.className='option Ustensil';
-      li.addEventListener("click", selectItemSuggestionUstensil);
+      li.setAttribute("onclick", 'selectUstensil(" '+li.textContent+'")');
       suggestionsUstensil.appendChild(li);  
   } 
   return ustensilArray;  

@@ -9,15 +9,18 @@ searchInputIngredient.addEventListener("input", handleInputIngredient);
 filteredIngredient = localStorage.getItem("filteredIngredient");
 filteredIngredient = JSON.parse(filteredIngredient);
 
+filteredRecipes = localStorage.getItem("Repository");
+filteredRecipes = JSON.parse(filteredRecipes);
 
 function searchIngredient(filter){
   if(filter.length >2){
     filter= filter.toUpperCase();
     for(let i = 0; i < filteredIngredient.length; i++){
-      
       ingredientValue = filteredIngredient[i].toUpperCase();
       if (ingredientValue.includes(filter)) {
+        if(!ingredientFiltered.includes(filteredIngredient[i])){
         ingredientFiltered.push(filteredIngredient[i]);
+        }
       }
     }
 
@@ -44,6 +47,7 @@ function handleInputIngredient(event) {
     searchIngredient(userInput);
     openSuggestionsIngredient(); // show the suggestions if the user typed something
   } else {
+    getOptionsIngredients(filteredRecipes);
     closeSuggestionsIngredient(); // close them if user backspaces to empty the input
   }
 }
@@ -85,7 +89,6 @@ function selectIngredient(item) {
 function closeIcon(item){
 const cible = document.getElementById(item);
 tags.removeChild(cible);
-
 }
 
 
