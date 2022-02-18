@@ -66,15 +66,3 @@ function closeSuggestionsAppliance() {
     //searchInput.focus(); // focus should stay on the input
 }
 
-
-function selectAppliance(item) {
-  const badge = document.createElement('div');
-  badge.className="badge badge-pill appliance";
-  badge.setAttribute("id", item);
-  badge.textContent = item;
-  const icon = document.createElement('i');
-  icon.className="far fa-times-circle ms-2";
-  icon.setAttribute("onclick", 'closeIcon("'+item+'")');
-  badge.appendChild(icon);
-  tags.appendChild(badge); //show result with badge
-}

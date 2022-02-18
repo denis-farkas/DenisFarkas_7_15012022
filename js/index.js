@@ -4,9 +4,10 @@ function setCollection(collection) {
   localStorage.setItem('Repository', JSON.stringify(collection));    
 }
 
+
 function getCollection() {
-  const repository = localStorage.getItem('Repository');
-  const Repository = JSON.parse(repository);
+  let Repository = localStorage.getItem('Repository');
+  Repository = JSON.parse(Repository);
   return Repository;
 }
 

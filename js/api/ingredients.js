@@ -5,6 +5,7 @@ const tags = document.getElementById("tags");
 let ingredientFiltered = [];
 
 
+
 searchInputIngredient.addEventListener("input", handleInputIngredient);
 filteredIngredient = localStorage.getItem("filteredIngredient");
 filteredIngredient = JSON.parse(filteredIngredient);
@@ -17,9 +18,9 @@ function searchIngredient(filter){
     filter= filter.toUpperCase();
     for(let i = 0; i < filteredIngredient.length; i++){
       ingredientValue = filteredIngredient[i].toUpperCase();
-      if (ingredientValue.includes(filter)) {
-        if(!ingredientFiltered.includes(filteredIngredient[i])){
-        ingredientFiltered.push(filteredIngredient[i]);
+      if (ingredientValue === filter){
+        if(!ingredientFiltered.includes(ingredientValue)){
+        ingredientFiltered.push(ingredientValue);
         }
       }
     }
@@ -35,7 +36,7 @@ function searchIngredient(filter){
         li.role = "option"; 
         li.textContent = ingredientFiltered[i];
         li.className='option Ingredient';
-        li.setAttribute("onclick", 'selectIngredient(" '+li.textContent+'")');
+        li.setAttribute("onclick", 'selectIngredient("'+li.textContent+'")');
         suggestionsIngredient.appendChild(li);  
     } 
   }
@@ -70,25 +71,3 @@ function closeSuggestionsIngredient() {
   window.removeEventListener("click", closeSuggestionsIngredient); // don't need this anymore once it's closed
   //searchInput.focus(); // focus should stay on the input
 }
-
-
-function selectIngredient(item) {
-  const badge = document.createElement('div');
-  badge.className="badge badge-pill ingredient";
-  badge.setAttribute("id", item);
-  badge.textContent = item;
-  const icon = document.createElement('i');
-  icon.className="far fa-times-circle ms-2";
-  icon.setAttribute("onclick", 'closeIcon("'+item+'")');
-  badge.appendChild(icon);
-  tags.appendChild(badge); //show result with badge
-
-
-}
-
-function closeIcon(item){
-const cible = document.getElementById(item);
-tags.removeChild(cible);
-}
-
-

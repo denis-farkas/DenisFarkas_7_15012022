@@ -47,7 +47,7 @@ function getOptionsIngredients(collection) {
         li.role = "option"; // necessary for any children of a role="listbox"
         li.textContent = ingredientArray[i];
         li.className='option Ingredient';
-        li.setAttribute("onclick", 'selectIngredient(" '+li.textContent+'")');
+        li.setAttribute("onclick", 'selectIngredient("'+li.textContent+'")');
         suggestionsIngredient.appendChild(li);  
     }
     return ingredientArray;      
@@ -83,7 +83,6 @@ function getOptionsAppliance(collection) {
       li.textContent = applianceArray[i];
       li.className='option Appliance';
       li.setAttribute("onclick", 'selectAppliance(" '+li.textContent+'")');
-      console.log(li);
       suggestionsAppliance.appendChild(li); 
   } 
   return applianceArray;
@@ -180,7 +179,6 @@ function search(filter){
           filteredRecipes.push(recipes[i]);
         }
       }
-    localStorage.clear();
     resetDisplayCards();
     resetDisplayFilters();
     displayCards(filteredRecipes);
