@@ -1,3 +1,4 @@
+const tags = document.getElementById('tags');
 let badgesIngredient = [];
 let badgesUstensil = [];
 let badgesAppliance = [];
@@ -163,10 +164,11 @@ function searchTags() {
 
     if (badgesUstensil.length > 0) {
       let countUst = 0;
+
       for (let j = 0; j < badgesUstensil.length; j += 1) {
         const filter = badgesUstensil[j].toUpperCase();
-        for (let k = 0; k < lastRecipes[i].ustensil.length; k += 1) {
-          const ustensilValue = lastRecipes[i].ustensil[k].toUpperCase();
+        for (let k = 0; k < lastRecipes[i].ustensils.length; k += 1) {
+          const ustensilValue = lastRecipes[i].ustensils[k].toUpperCase();
 
           if (ustensilValue === filter) {
             countUst += 1;
