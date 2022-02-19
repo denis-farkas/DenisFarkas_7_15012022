@@ -1,18 +1,16 @@
 function cardRecipeFactory(item) {
-  const id = item.id;
-  const name = item.name;
-  const ingredients = item.ingredients;
-  const time = item.time;
-  const description = item.description;
-  const appliance = item.appliance;
-  const ustensils = item.ustensils;
+  const { id } = item;
+  const { name } = item;
+  const { ingredients } = item;
+  const { time } = item;
+  const { description } = item;
 
   let quantity;
   let unit;
 
   const ingredientArray = [];
-  for (const i in ingredients) {
-  ingredientArray.push(ingredients[i].ingredient);
+  for (let i = 0; i < ingredients.length; i += 1) {
+    ingredientArray.push(ingredients[i].ingredient);
   }
 
   function getCardRecipeDOM() {
@@ -64,7 +62,7 @@ function cardRecipeFactory(item) {
     const listIngredients = document.createElement('ul');
     listIngredients.className = 'list_ingredients';
 
-    for(i=0; i< ingredients.length; i++) {
+    for (let i = 0; i < ingredients.length; i += 1) {
       const line = document.createElement('li');
       line.className = 'card-text display';
 
@@ -87,7 +85,7 @@ function cardRecipeFactory(item) {
 
       line.textContent = `${ingredients[i].ingredient}: ${quantity} ${unit}`;
       listIngredients.appendChild(line);
-    };
+    }
     component.appendChild(listIngredients);
 
     const manual = document.createElement('div');

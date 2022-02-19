@@ -244,8 +244,7 @@ ul {
   overflow: hidden;
   word-wrap: break-word;
   text-overflow: ellipsis;
-  max-height: 18px;
-  line-height: 18px;
+  line-height: 19px;
 }
 
 .fa-clock {

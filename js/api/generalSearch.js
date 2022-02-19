@@ -76,7 +76,7 @@ function getOptionsAppliance(collection) {
     li.role = 'option';
     li.textContent = applianceArray[i];
     li.className = 'option Appliance';
-    li.setAttribute('onclick', `selectAppliance(" ${li.textContent}")`);
+    li.setAttribute('onclick', `selectAppliance("${li.textContent}")`);
     suggestionsAppliance.appendChild(li);
   }
   return applianceArray;
@@ -113,7 +113,7 @@ function getOptionsUstensils(collection) {
     li.role = 'option';
     li.textContent = ustensilArray[i];
     li.className = 'option Ustensil';
-    li.setAttribute('onclick', `selectUstensil(" ${li.textContent}")`);
+    li.setAttribute('onclick', `selectUstensil("${li.textContent}")`);
     suggestionsUstensil.appendChild(li);
   }
   return ustensilArray;

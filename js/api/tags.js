@@ -37,8 +37,7 @@ function checkTags() {
     getOptionsAppliance(filteredTags);
     getOptionsUstensils(filteredTags);
   } else {
-    const filter = searchInput.value.toUpperCase();
-    search(filter);
+    search();
   }
 }
 
@@ -63,7 +62,6 @@ function closeIconIngredient(item) {
   const cible = document.getElementById(item);
   tags.removeChild(cible);
   removeOption(item, badgesIngredient);
-  console.log(badgesIngredient);
   localStorage.setItem('ingredientTags', JSON.stringify(badgesIngredient));
   checkTags();
 }
@@ -144,19 +142,10 @@ function searchTags() {
     }
 
     if (badgesAppliance.length > 0) {
-      let countApp = 0;
-      for (let j = 0; j < badgesAppliance.length; j += 1) {
-        const filter = badgesAppliance[j].toUpperCase();
-        for (let k = 0; k < lastRecipes[i].appliance.length; k += 1) {
-          const applianceValue = lastRecipes[i].appliance[k].toUpperCase();
-
-          if (applianceValue === filter) {
-            countApp += 1;
-          }
-        }
-        if (countApp === badgesAppliance.length) {
-          checkTagsAppliance = true;
-        }
+      const filter = badgesAppliance[0].toUpperCase();
+      const applianceValue = lastRecipes[i].appliance.toUpperCase();
+      if (applianceValue === filter) {
+        checkTagsAppliance = true;
       }
     } else {
       checkTagsAppliance = true;
@@ -167,31 +156,32 @@ function searchTags() {
 
       for (let j = 0; j < badgesUstensil.length; j += 1) {
         const filter = badgesUstensil[j].toUpperCase();
-        for (let k = 0; k < lastRecipes[i].ustensils.length; k += 1) {
-          const ustensilValue = lastRecipes[i].ustensils[k].toUpperCase();
-
+        if (lastRecipes[i].ustensils.length === 1) {
+          const ustensilValue = lastRecipes[i].ustensils[0].toUpperCase();
+          console.log(lastRecipes[i].ustensils[0]);
           if (ustensilValue === filter) {
-            countUst += 1;
+            checkTagsUstensil = true;
           }
-        }
-        if (countUst === badgesUstensil.length) {
-          checkTagsUstensil = true;
+        } else {
+          for (let k = 0; k < lastRecipes[i].ustensils.length; k += 1) {
+            const ustensilValue = lastRecipes[i].ustensils[k].toUpperCase();
+
+            if (ustensilValue === filter) {
+              countUst += 1;
+            }
+          }
+          if (countUst === badgesUstensil.length) {
+            checkTagsUstensil = true;
+          }
         }
       }
     } else {
       checkTagsUstensil = true;
     }
+    console.log(checkTagsIngredient, checkTagsAppliance, checkTagsUstensil);
     if (checkTagsIngredient && checkTagsAppliance && checkTagsUstensil) {
       filteredTags[i] = lastRecipes[i];
     }
   }
-  console.log(filteredTags);
   return filteredTags;
-}
-
-function removeOptionDifferent(item, array) {
-  const index = array.indexOf(item);
-  if (index > -1) {
-    array.splice(index, 1);
-  }
 }

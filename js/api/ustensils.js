@@ -1,78 +1,67 @@
-const suggestionsUstensil = document.getElementById("suggestionsUstensil");
-const autocompleteUstensil = document.getElementById("ustensil");
-const searchInputUstensil = document.getElementById("searchInputUstensil");
-let ustensilFiltered = [];
-let ustensilTags = [];
+const suggestionsUstensil = document.getElementById('suggestionsUstensil');
+const autocompleteUstensil = document.getElementById('ustensil');
+const searchInputUstensil = document.getElementById('searchInputUstensil');
 
-localStorage.setItem("ustensilTags", ustensilTags);
+const ustensilFiltered = [];
 
-
-searchInputUstensil.addEventListener("input", handleInputUstensil);
-filteredUstensil = localStorage.getItem("filteredUstensil");
+let filteredUstensil = localStorage.getItem('filteredUstensil');
 filteredUstensil = JSON.parse(filteredUstensil);
 
-filteredRecipes = localStorage.getItem("Repository");
-filteredRecipes = JSON.parse(filteredRecipes);
-
-function searchUstensil(filter){
-  if(filter.length >2){
-    filter= filter.toUpperCase();
-    for(let i = 0; i < filteredUstensil.length; i++){
-      ustensilValue = filteredUstensil[i].toUpperCase();
-      if (ustensilValue.includes(filter)) {
-        if(!ustensilFiltered.includes(filteredUstensil[i])){
-        ustensilFiltered.push(filteredUstensil[i]);
+function searchUstensil(filter) {
+  if (filter.length > 2) {
+    const Filter = filter.toUpperCase();
+    for (let i = 0; i < filteredUstensil.length; i += 1) {
+      const ustensilValue = filteredUstensil[i].toUpperCase();
+      if (ustensilValue.includes(Filter)) {
+        if (!ustensilFiltered.includes(filteredUstensil[i])) {
+          ustensilFiltered.push(filteredUstensil[i]);
         }
       }
     }
 
-    suggestionsUstensil.innerHTML = "";
+    suggestionsUstensil.innerHTML = '';
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
 
-    for(i=0; i <ustensilFiltered.length; i++){
-      const li = document.createElement("li");
-        li.id = 'optionUstensil-'+i; 
-        li.role = "option"; 
-        li.textContent = ustensilFiltered[i];
-        li.className='option Ustensil';
-        li.setAttribute("onclick", 'selectUstensil(" '+li.textContent+'")');
-        suggestionsUstensil.appendChild(li);  
-    } 
+    for (let i = 0; i < ustensilFiltered.length; i += 1) {
+      const li = document.createElement('li');
+      li.id = `optionUstensil-${i}`;
+      li.role = 'option';
+      li.textContent = ustensilFiltered[i];
+      li.className = 'option Ustensil';
+      li.setAttribute('onclick', `selectUstensil("${li.textContent}")`);
+      suggestionsUstensil.appendChild(li);
+    }
   }
+}
+
+function closeSuggestionsUstensil() {
+  suggestionsUstensil.hidden = true; // hide popup
+  autocompleteUstensil.setAttribute('aria-expanded', false);
+  window.removeEventListener('click', closeSuggestionsUstensil);
+}
+function openSuggestionsUstensil() {
+  suggestionsUstensil.hidden = false; // show popup
+  autocompleteUstensil.setAttribute('aria-expanded', true);
+  window.addEventListener('click', closeSuggestionsUstensil);
 }
 
 function handleInputUstensil(event) {
   const userInput = event.target.value;
   if (userInput.length > 2) {
     searchUstensil(userInput);
-    openSuggestionsUstensil(); 
+    openSuggestionsUstensil();
   } else {
+    // eslint-disable-next-line no-undef
     getOptionsUstensils(filteredRecipes);
-    closeSuggestionsUstensil(); 
+    closeSuggestionsUstensil();
   }
 }
 
-document.getElementById("ustensilB").addEventListener('click', function (event){
+searchInputUstensil.addEventListener('input', handleInputUstensil);
+
+document.getElementById('ustensilB').addEventListener('click', (event) => {
   openSuggestionsUstensil();
   event.stopPropagation();
-})
-
-function openSuggestionsUstensil() {
-  suggestionsUstensil.hidden = false; // show popup
-  autocompleteUstensil.setAttribute("aria-expanded", true); 
-  window.addEventListener("click", closeSuggestionsUstensil); 
-}
-
-
-function closeSuggestionsUstensil() {
-  suggestionsUstensil.hidden = true; // hide popup
-  autocompleteUstensil.setAttribute("aria-expanded", false); 
-  window.removeEventListener("click", closeSuggestionsUstensil); 
-}
-
-
-
-
-
+});
