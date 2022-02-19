@@ -1,4 +1,3 @@
-/* eslint-disable no-undef */
 const recipesSection = document.querySelector('main');
 function setCollection(collection) {
   localStorage.setItem('Repository', JSON.stringify(collection));
