@@ -5,22 +5,19 @@ const tags = document.getElementById("tags");
 let ingredientFiltered = [];
 
 
-
 searchInputIngredient.addEventListener("input", handleInputIngredient);
 filteredIngredient = localStorage.getItem("filteredIngredient");
 filteredIngredient = JSON.parse(filteredIngredient);
 
-filteredRecipes = localStorage.getItem("Repository");
-filteredRecipes = JSON.parse(filteredRecipes);
 
 function searchIngredient(filter){
   if(filter.length >2){
     filter= filter.toUpperCase();
     for(let i = 0; i < filteredIngredient.length; i++){
       ingredientValue = filteredIngredient[i].toUpperCase();
-      if (ingredientValue === filter){
-        if(!ingredientFiltered.includes(ingredientValue)){
-        ingredientFiltered.push(ingredientValue);
+      if (ingredientValue.includes(filter)){
+        if(!ingredientFiltered.includes(filteredIngredient[i])){
+        ingredientFiltered.push(filteredIngredient[i]);
         }
       }
     }
@@ -44,6 +41,7 @@ function searchIngredient(filter){
 
 function handleInputIngredient(event) {
   const userInput = event.target.value;
+  console.log(userInput);
   if (userInput.length > 2) {
     searchIngredient(userInput);
     openSuggestionsIngredient(); // show the suggestions if the user typed something

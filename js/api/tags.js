@@ -1,177 +1,195 @@
 let badgesIngredient = [];
 let badgesUstensil = [];
 let badgesAppliance = [];
+let filteredTags = [];
 
-
-function removeOption(item, array){
-  for(let i=array.length-1; i>=0; i--){
-    if(array[i] === item){
+function removeOption(item, array) {
+  for (let i = array.length - 1; i >= 0; i -= 1) {
+    if (array[i] === item) {
       array.splice(i, 1);
     }
   }
 }
 
-function checkTags(badgesIngredient, badgesAppliance, badgesUstensil){
-  if(badgesIngredient.length > 0 || badgesAppliance.length > 0 || badgesUstensil > 0){
-   const filteredTags = searchTags(badgesIngredient, badgesAppliance, badgesUstensil);
-   console.log(filteredTags);
-   resetDisplayCards();
-   resetDisplayFilters();
-   displayCards(filteredTags);
-   getOptionsIngredients(filteredTags);
-   getOptionsAppliance(filteredTags);
-   getOptionsUstensils(filteredTags);
-   localStorage.setItem('Repository', JSON.stringify(filteredTags)); 
- }else{
-   filter= searchInput.value.toUpperCase();
-   search(filter);
- }
+function checkTags() {
+  if (localStorage.getItem('ingredientTags')) {
+    badgesIngredient = JSON.parse(localStorage.getItem('ingredientTags'));
+  }
+  if (localStorage.getItem('ustensilTags')) {
+    badgesUstensil = JSON.parse(localStorage.getItem('ustensilTags'));
+  }
+  if (localStorage.getItem('applianceTags')) {
+    badgesAppliance = JSON.parse(localStorage.getItem('applianceTags'));
+  }
+
+  if (
+    badgesIngredient.length > 0 ||
+    badgesAppliance.length > 0 ||
+    badgesUstensil.length > 0
+  ) {
+    filteredTags = searchTags();
+    console.log(filteredTags);
+    resetDisplayCards();
+    resetDisplayFilters();
+    displayCards(filteredTags);
+    getOptionsIngredients(filteredTags);
+    getOptionsAppliance(filteredTags);
+    getOptionsUstensils(filteredTags);
+  } else {
+    const filter = searchInput.value.toUpperCase();
+    search(filter);
+  }
 }
 
 function selectIngredient(item) {
   const badge = document.createElement('div');
-  badge.className="badge badge-pill ingredient";
-  badge.setAttribute("id", item);
+  badge.className = 'badge badge-pill ingredient';
+  badge.setAttribute('id', item);
   badge.textContent = item;
   const icon = document.createElement('i');
-  icon.className="far fa-times-circle ms-2";
-  icon.setAttribute("onclick", 'closeIconIngredient("'+item+'")');
+  icon.className = 'far fa-times-circle ms-2';
+  icon.setAttribute('onclick', `closeIconIngredient("${item}")`);
   badge.appendChild(icon);
-  tags.appendChild(badge); //show result with badge
+  tags.appendChild(badge); // show result with badge
   if (!badgesIngredient.includes(item)) {
     badgesIngredient.push(item);
+    localStorage.setItem('ingredientTags', JSON.stringify(badgesIngredient));
   }
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  checkTags();
 }
 
-function closeIconIngredient(item){
+function closeIconIngredient(item) {
   const cible = document.getElementById(item);
   tags.removeChild(cible);
   removeOption(item, badgesIngredient);
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  console.log(badgesIngredient);
+  localStorage.setItem('ingredientTags', JSON.stringify(badgesIngredient));
+  checkTags();
 }
-
 
 function selectUstensil(item) {
   const badge = document.createElement('div');
-  badge.className="badge badge-pill ustensil";
-  badge.setAttribute("id", item);
+  badge.className = 'badge badge-pill ustensil';
+  badge.setAttribute('id', item);
   badge.textContent = item;
   const icon = document.createElement('i');
-  icon.className="far fa-times-circle ms-2";
-  icon.setAttribute("onclick", 'closeIconUstensil("'+item+'")');
+  icon.className = 'far fa-times-circle ms-2';
+  icon.setAttribute('onclick', `closeIconUstensil("${item}")`);
   badge.appendChild(icon);
-  tags.appendChild(badge); //show result with badge
+  tags.appendChild(badge); // show result with badge
   badgesUstensil.push(item);
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  localStorage.setItem('ustensilTags', JSON.stringify(badgesUstensil));
+  checkTags();
 }
 
-function closeIconUstensil(item){
+function closeIconUstensil(item) {
   const cible = document.getElementById(item);
   tags.removeChild(cible);
   removeOption(item, badgesUstensil);
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  localStorage.setItem('ustensilTags', JSON.stringify(badgesUstensil));
+  checkTags();
 }
-
 
 function selectAppliance(item) {
   const badge = document.createElement('div');
-  badge.className="badge badge-pill appliance";
-  badge.setAttribute("id", item);
+  badge.className = 'badge badge-pill appliance';
+  badge.setAttribute('id', item);
   badge.textContent = item;
   const icon = document.createElement('i');
-  icon.className="far fa-times-circle ms-2";
-  icon.setAttribute("onclick", 'closeIconAppliance("'+item+'")');
+  icon.className = 'far fa-times-circle ms-2';
+  icon.setAttribute('onclick', `closeIconAppliance("${item}")`);
   badge.appendChild(icon);
-  tags.appendChild(badge); //show result with badge
+  tags.appendChild(badge); // show result with badge
   badgesAppliance.push(item);
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  localStorage.setItem('applianceTags', JSON.stringify(badgesAppliance));
+  checkTags();
 }
 
-function closeIconAppliance(item){
+function closeIconAppliance(item) {
   const cible = document.getElementById(item);
   tags.removeChild(cible);
   removeOption(item, badgesAppliance);
-  checkTags(badgesIngredient, badgesAppliance, badgesUstensil);
+  localStorage.setItem('applianceTags', JSON.stringify(badgesAppliance));
+  checkTags();
 }
 
+function searchTags() {
+  filteredTags = [];
+  const lastRecipes = getCollection();
 
-function searchTags(badgesIngredient, badgesAppliance, badgesUstensil){
-  let lastRecipes = getCollection();
-  
-  let checkTagsIngredient = true;
-  let checkTagsAppliance = true;
-  let checkTagsUstensil = true;
-  let filteredTags = [];
+  for (let i = 0; i < lastRecipes.length; i += 1) {
+    let checkTagsIngredient = false;
+    let checkTagsAppliance = false;
+    let checkTagsUstensil = false;
 
-  for (i=0; i < lastRecipes.length; i++){
-   
-    if(badgesIngredient.length > 0){
+    if (badgesIngredient.length > 0) {
       let countIng = 0;
-      for(j=0; j < badgesIngredient.length; j++){
-        filter= badgesIngredient[j].toUpperCase();
-        for (let k = 0; k < lastRecipes[i].ingredients.length; k++) {
-          let ingredientValue = lastRecipes[i].ingredients[k].ingredient.toUpperCase();
+
+      for (let j = 0; j < badgesIngredient.length; j += 1) {
+        const filter = badgesIngredient[j].toUpperCase();
+        for (let k = 0; k < lastRecipes[i].ingredients.length; k += 1) {
+          const ingredientValue =
+            lastRecipes[i].ingredients[k].ingredient.toUpperCase();
           if (ingredientValue === filter) {
-            countIng++;
+            countIng += 1;
           }
         }
-        if (countIng !== badgesIngredient.length){
-          checkTagsIngredient = false;
+        if (countIng === badgesIngredient.length) {
+          checkTagsIngredient = true;
         }
       }
+    } else {
+      checkTagsIngredient = true;
     }
 
-    if(badgesAppliance.length > 0){
+    if (badgesAppliance.length > 0) {
       let countApp = 0;
-      for(j=0; j < badgesAppliance.length; j++){
-        filter= badgesAppliance[j].toUpperCase();
+      for (let j = 0; j < badgesAppliance.length; j += 1) {
+        const filter = badgesAppliance[j].toUpperCase();
         for (let k = 0; k < lastRecipes[i].appliance.length; k += 1) {
-          applianceValue = lastRecipes[i].appliance[k].toUpperCase();
-          
+          const applianceValue = lastRecipes[i].appliance[k].toUpperCase();
+
           if (applianceValue === filter) {
-            countApp += 1
+            countApp += 1;
           }
         }
-        if (countApp !== badgesAppliance.length){
-          console.log('wrong');
-          checkTagsAppliance = false;
+        if (countApp === badgesAppliance.length) {
+          checkTagsAppliance = true;
         }
       }
-      
+    } else {
+      checkTagsAppliance = true;
     }
 
-    if(badgesUstensil.length > 0){
+    if (badgesUstensil.length > 0) {
       let countUst = 0;
-      for(j=0; j < badgesUstensil.length; j++){
-        filter= badgesUstensil[j].toUpperCase();
+      for (let j = 0; j < badgesUstensil.length; j += 1) {
+        const filter = badgesUstensil[j].toUpperCase();
         for (let k = 0; k < lastRecipes[i].ustensil.length; k += 1) {
-          applianceValue = lastRecipes[i].ustensil[k].toUpperCase();
-          
+          const ustensilValue = lastRecipes[i].ustensil[k].toUpperCase();
+
           if (ustensilValue === filter) {
-            countUst += 1
+            countUst += 1;
           }
         }
-        if (countUst !== badgesustensil.length){
-          console.log('wrong');
-          checkTagsUstensil = false;
+        if (countUst === badgesUstensil.length) {
+          checkTagsUstensil = true;
         }
       }
+    } else {
+      checkTagsUstensil = true;
     }
-
-    if (checkTagsIngredient == true && checkTagsAppliance == true && checkTagsUstensil == true){
-      filteredTags.push(lastRecipes[i]);
+    if (checkTagsIngredient && checkTagsAppliance && checkTagsUstensil) {
+      filteredTags[i] = lastRecipes[i];
     }
-
   }
-  return filteredTags; 
-}  
-
-
-function removeOptionDifferent(item, array){
-  const index = array.indexOf(item);
-  if (index > -1){
-    array.splice(index, 1); 
-  }
+  console.log(filteredTags);
+  return filteredTags;
 }
 
+function removeOptionDifferent(item, array) {
+  const index = array.indexOf(item);
+  if (index > -1) {
+    array.splice(index, 1);
+  }
+}

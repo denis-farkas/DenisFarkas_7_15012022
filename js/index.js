@@ -1,9 +1,8 @@
+/* eslint-disable no-undef */
 const recipesSection = document.querySelector('main');
-
 function setCollection(collection) {
-  localStorage.setItem('Repository', JSON.stringify(collection));    
+  localStorage.setItem('Repository', JSON.stringify(collection));
 }
-
 
 function getCollection() {
   let Repository = localStorage.getItem('Repository');
@@ -12,32 +11,29 @@ function getCollection() {
 }
 
 function displayCards(collection) {
-  for(let i=0; i <collection.length; i++){
+  for (let i = 0; i < collection.length; i += 1) {
     const filterModel = cardRecipeFactory(collection[i]);
     const cardRecipeDOM = filterModel.getCardRecipeDOM();
     recipesSection.appendChild(cardRecipeDOM);
-  };
+  }
 }
 
-function resetDisplayCards(){
-  const recipesSection = document.querySelector('main');
-  recipesSection.innerHTML = "";
+function resetDisplayCards() {
+  recipesSection.innerHTML = '';
 }
 
-
-
-function resetDisplayFilters(){
-  suggestionsIngredient.innerHTML = "";
-  suggestionsAppliance.innerHTML = "";
-  suggestionsUstensil.innerHTML = "";
+function resetDisplayFilters() {
+  suggestionsIngredient.innerHTML = '';
+  suggestionsAppliance.innerHTML = '';
+  suggestionsUstensil.innerHTML = '';
 }
 
-function init(){
+function init() {
   localStorage.clear();
   resetDisplayCards();
   resetDisplayFilters();
   setCollection(recipes);
-  let allRecipes = getCollection();
+  const allRecipes = getCollection();
   displayCards(allRecipes);
 }
 

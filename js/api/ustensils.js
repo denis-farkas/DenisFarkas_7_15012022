@@ -2,7 +2,9 @@ const suggestionsUstensil = document.getElementById("suggestionsUstensil");
 const autocompleteUstensil = document.getElementById("ustensil");
 const searchInputUstensil = document.getElementById("searchInputUstensil");
 let ustensilFiltered = [];
+let ustensilTags = [];
 
+localStorage.setItem("ustensilTags", ustensilTags);
 
 
 searchInputUstensil.addEventListener("input", handleInputUstensil);
