@@ -4,10 +4,20 @@ const searchInputAppliance = document.getElementById('searchInputAppliance');
 
 const applianceFiltered = [];
 
-let filteredAppliance = localStorage.getItem('filteredAppliance');
-filteredAppliance = JSON.parse(filteredAppliance);
+function getFilteredAppliance() {
+  let filteredAppliance = [];
+  if (localStorage.getItem('filteredAppliance')) {
+    filteredAppliance = localStorage.getItem('filteredAppliance');
+    filteredAppliance = JSON.parse(filteredAppliance);
+  } else {
+    filteredAppliance = getAppliances(recipes);
+  }
+  return filteredAppliance;
+}
 
 function searchAppliance(filter) {
+  const filteredAppliance = getFilteredAppliance();
+
   if (filter.length > 2) {
     const Filter = filter.toUpperCase();
     for (let i = 0; i < filteredAppliance.length; i += 1) {
@@ -30,7 +40,10 @@ function searchAppliance(filter) {
       li.role = 'option';
       li.textContent = applianceFiltered[i];
       li.className = 'option Appliance';
-      li.setAttribute('onclick', `selectAppliance("${li.textContent}")`);
+      li.setAttribute(
+        'onclick',
+        `selectOption("${li.textContent}", "appliance")`
+      );
       suggestionsAppliance.appendChild(li);
     }
   }

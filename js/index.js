@@ -34,6 +34,9 @@ function init() {
   setCollection(recipes);
   const allRecipes = getCollection();
   displayCards(allRecipes);
+  getOptionsIngredients(allRecipes);
+  getOptionsAppliance(allRecipes);
+  getOptionsUstensils(allRecipes);
 }
 
 init();

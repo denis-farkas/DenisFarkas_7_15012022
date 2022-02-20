@@ -4,12 +4,23 @@ const searchInputUstensil = document.getElementById('searchInputUstensil');
 
 const ustensilFiltered = [];
 
-let filteredUstensil = localStorage.getItem('filteredUstensil');
-filteredUstensil = JSON.parse(filteredUstensil);
+function getFilteredUstensil() {
+  let filteredUstensil = [];
+  if (localStorage.getItem('filteredUstensil')) {
+    filteredUstensil = localStorage.getItem('filteredUstensil');
+    filteredUstensil = JSON.parse(filteredUstensil);
+  } else {
+    filteredUstensil = getUstensil(recipes);
+  }
+  return filteredUstensil;
+}
 
 function searchUstensil(filter) {
+  const filteredUstensil = getFilteredUstensil();
+
   if (filter.length > 2) {
     const Filter = filter.toUpperCase();
+
     for (let i = 0; i < filteredUstensil.length; i += 1) {
       const ustensilValue = filteredUstensil[i].toUpperCase();
       if (ustensilValue.includes(Filter)) {
@@ -30,7 +41,10 @@ function searchUstensil(filter) {
       li.role = 'option';
       li.textContent = ustensilFiltered[i];
       li.className = 'option Ustensil';
-      li.setAttribute('onclick', `selectUstensil("${li.textContent}")`);
+      li.setAttribute(
+        'onclick',
+        `selectOption("${li.textContent}", "ustensil")`
+      );
       suggestionsUstensil.appendChild(li);
     }
   }

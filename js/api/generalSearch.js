@@ -10,7 +10,7 @@ let titleValue;
 
 /* fonctions qui chargent tout les ingrédients, appareils et ustensiles suite à la recherche globale */
 
-function getOptionsIngredients(collection) {
+function getIngredients(collection) {
   const ingredientArray = [];
   for (let i = 0; i < collection.length; i += 1) {
     for (let j = 0; j < collection[i].ingredients.length; j += 1) {
@@ -19,6 +19,11 @@ function getOptionsIngredients(collection) {
       }
     }
   }
+  return ingredientArray;
+}
+
+function getOptionsIngredients(collection) {
+  const ingredientArray = getIngredients(collection);
 
   localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));
   suggestionsIngredient.innerHTML = '';
@@ -41,19 +46,26 @@ function getOptionsIngredients(collection) {
     li.role = 'option'; // necessary for any children of a role="listbox"
     li.textContent = ingredientArray[i];
     li.className = 'option Ingredient';
-    li.setAttribute('onclick', `selectIngredient("${li.textContent}")`);
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "ingredient")`
+    );
     suggestionsIngredient.appendChild(li);
   }
-  return ingredientArray;
 }
 
-function getOptionsAppliance(collection) {
+function getAppliances(collection) {
   const applianceArray = [];
   for (let i = 0; i < collection.length; i += 1) {
     if (!applianceArray.includes(collection[i].appliance)) {
       applianceArray.push(collection[i].appliance);
     }
   }
+  return applianceArray;
+}
+
+function getOptionsAppliance(collection) {
+  const applianceArray = getAppliances(collection);
 
   localStorage.setItem('filteredAppliance', JSON.stringify(applianceArray));
   suggestionsAppliance.innerHTML = '';
@@ -76,13 +88,15 @@ function getOptionsAppliance(collection) {
     li.role = 'option';
     li.textContent = applianceArray[i];
     li.className = 'option Appliance';
-    li.setAttribute('onclick', `selectAppliance("${li.textContent}")`);
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "appliance")`
+    );
     suggestionsAppliance.appendChild(li);
   }
-  return applianceArray;
 }
 
-function getOptionsUstensils(collection) {
+function getUstensils(collection) {
   const ustensilArray = [];
   for (let i = 0; i < collection.length; i += 1) {
     for (let j = 0; j < collection[i].ustensils.length; j += 1) {
@@ -91,9 +105,13 @@ function getOptionsUstensils(collection) {
       }
     }
   }
+  return ustensilArray;
+}
+
+function getOptionsUstensils(collection) {
+  const ustensilArray = getUstensils(collection);
 
   localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));
-
   suggestionsUstensil.innerHTML = '';
 
   if (ustensilArray.length > 10) {
@@ -113,10 +131,9 @@ function getOptionsUstensils(collection) {
     li.role = 'option';
     li.textContent = ustensilArray[i];
     li.className = 'option Ustensil';
-    li.setAttribute('onclick', `selectUstensil("${li.textContent}")`);
+    li.setAttribute('onclick', `selectOption("${li.textContent}", "ustensil")`);
     suggestionsUstensil.appendChild(li);
   }
-  return ustensilArray;
 }
 
 /* Fonction de recherche globale */
@@ -184,9 +201,9 @@ function search() {
 }
 
 function testFilter() {
-  filter = searchInput.value.toUpperCase();
-  if (filter.length > 2) {
-    search(filter);
+  const Filter = searchInput.value.toUpperCase();
+  if (Filter.length > 2) {
+    search(Filter);
   } else {
     init();
   }

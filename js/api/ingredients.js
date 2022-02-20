@@ -6,10 +6,19 @@ const searchInputIngredient = document.getElementById('searchInputIngredient');
 
 const ingredientFiltered = [];
 
-let filteredIngredient = localStorage.getItem('filteredIngredient');
-filteredIngredient = JSON.parse(filteredIngredient);
+function getFilteredIngredient() {
+  let filteredIngredient = [];
+  if (localStorage.getItem('filteredIngredient')) {
+    filteredIngredient = localStorage.getItem('filteredIngredient');
+    filteredIngredient = JSON.parse(filteredIngredient);
+  } else {
+    filteredIngredient = getOptionsIngredients(recipes);
+  }
+  return filteredIngredient;
+}
 
 function searchIngredient(filter) {
+  const filteredIngredient = getFilteredIngredient();
   if (filter.length > 2) {
     const Filter = filter.toUpperCase();
     for (let i = 0; i < filteredIngredient.length; i += 1) {
@@ -32,7 +41,10 @@ function searchIngredient(filter) {
       li.role = 'option';
       li.textContent = ingredientFiltered[i];
       li.className = 'option Ingredient';
-      li.setAttribute('onclick', `selectIngredient("${li.textContent}")`);
+      li.setAttribute(
+        'onclick',
+        `selectOption("${li.textContent}", "ingredient")`
+      );
       suggestionsIngredient.appendChild(li);
     }
   }
@@ -49,22 +61,29 @@ function openSuggestionsIngredient() {
   window.addEventListener('click', closeSuggestionsIngredient); // clicking the body should close the popup
 }
 
-function handleInputIngredient(event) {
-  const userInput = event.target.value;
-  console.log(userInput);
-  if (userInput.length > 2) {
+function handleInputIngredient() {
+  const userInput = searchInputIngredient.value;
+  if (userInput === undefined) {
+    const searchInp = searchInput.value;
+    if (searchInp === undefined) {
+      getOptionsIngredients(recipes);
+      openSuggestionsIngredient();
+    } else {
+      const filteredIngredient = JSON.parse(
+        localStorage.getItem('filteredIngredient')
+      );
+      getOptionsIngredients(filteredIngredient);
+      openSuggestionsIngredient();
+    }
+  } else {
     searchIngredient(userInput);
     openSuggestionsIngredient(); // show the suggestions if the user typed something
-  } else {
-    // eslint-disable-next-line no-undef
-    getOptionsIngredients(filteredRecipes);
-    closeSuggestionsIngredient(); // close them if user backspaces to empty the input
   }
 }
 
 searchInputIngredient.addEventListener('input', handleInputIngredient);
 
 document.getElementById('ingredientB').addEventListener('click', (event) => {
-  openSuggestionsIngredient();
+  handleInputIngredient(event);
   event.stopPropagation();
 });
