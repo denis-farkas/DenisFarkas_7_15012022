@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const suggestionsAppliance = document.getElementById('suggestionsAppliance');
 const autocompleteAppliance = document.getElementById('autocompleteAppliance');
 const searchInputAppliance = document.getElementById('searchInputAppliance');
@@ -39,7 +41,7 @@ function searchAppliance(filter) {
       li.id = `optionAppliance-${i}`;
       li.role = 'option';
       li.textContent = applianceFiltered[i];
-      li.className = 'option Appliance';
+      li.className = 'option appliance';
       li.setAttribute(
         'onclick',
         `selectOption("${li.textContent}", "appliance")`

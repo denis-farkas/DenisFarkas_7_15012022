@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 function cardRecipeFactory(item) {
   const { id } = item;
   const { name } = item;

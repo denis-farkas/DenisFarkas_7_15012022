@@ -1,3 +1,6 @@
+/* eslint-disable no-unused-vars */
+/* eslint-disable no-undef */
+
 const tags = document.getElementById('tags');
 let badges = [];
 
@@ -13,6 +16,7 @@ function checkTags() {
   if (localStorage.getItem('badges')) {
     badges = JSON.parse(localStorage.getItem('badges'));
     if (badges.length > 0) {
+      // eslint-disable-next-line no-use-before-define
       filteredTags = searchTags(badges);
       resetDisplayCards();
       resetDisplayFilters();

@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const suggestionsIngredient = document.getElementById('suggestionsIngredient');
 const autocompleteIngredient = document.getElementById(
   'autocompleteIngredient'
@@ -40,7 +42,7 @@ function searchIngredient(filter) {
       li.id = `optionIngredient-${i}`;
       li.role = 'option';
       li.textContent = ingredientFiltered[i];
-      li.className = 'option Ingredient';
+      li.className = 'option ingredient';
       li.setAttribute(
         'onclick',
         `selectOption("${li.textContent}", "ingredient")`

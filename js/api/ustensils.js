@@ -1,3 +1,5 @@
+/* eslint-disable no-undef */
+/* eslint-disable no-unused-vars */
 const suggestionsUstensil = document.getElementById('suggestionsUstensil');
 const autocompleteUstensil = document.getElementById('ustensil');
 const searchInputUstensil = document.getElementById('searchInputUstensil');
@@ -40,7 +42,7 @@ function searchUstensil(filter) {
       li.id = `optionUstensil-${i}`;
       li.role = 'option';
       li.textContent = ustensilFiltered[i];
-      li.className = 'option Ustensil';
+      li.className = 'option ustensil';
       li.setAttribute(
         'onclick',
         `selectOption("${li.textContent}", "ustensil")`
