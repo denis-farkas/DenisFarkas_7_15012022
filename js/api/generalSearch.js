@@ -70,16 +70,18 @@ function getOptionsAppliance(collection) {
   localStorage.setItem('filteredAppliance', JSON.stringify(applianceArray));
   suggestionsAppliance.innerHTML = '';
 
-  if (applianceArray.length > 10) {
-    const factor = applianceArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsAppliance.classList.remove('toomuch');
-      suggestionsAppliance.classList.remove('various3');
-      suggestionsAppliance.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsAppliance.classList.add('various3');
-      suggestionsAppliance.classList.add('toomuch');
-    }
+  const factor = applianceArray.length / 10;
+  if (factor <= 1) {
+    suggestionsAppliance.classList.remove('toomuch');
+    suggestionsAppliance.classList.remove('various3');
+    suggestionsAppliance.classList.remove('various2');
+  } else if (factor > 1 && factor <= 2) {
+    suggestionsAppliance.classList.remove('toomuch');
+    suggestionsAppliance.classList.remove('various3');
+    suggestionsAppliance.classList.add('various2');
+  } else {
+    suggestionsAppliance.classList.add('various3');
+    suggestionsAppliance.classList.add('toomuch');
   }
 
   for (let i = 0; i < applianceArray.length; i += 1) {
@@ -114,16 +116,18 @@ function getOptionsUstensils(collection) {
   localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));
   suggestionsUstensil.innerHTML = '';
 
-  if (ustensilArray.length > 10) {
-    const factor = ustensilArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsUstensil.classList.remove('toomuch');
-      suggestionsUstensil.classList.remove('various3');
-      suggestionsUstensil.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsUstensil.classList.add('various3');
-      suggestionsUstensil.classList.add('toomuch');
-    }
+  const factorUstensil = ustensilArray.length / 10;
+  if (factorUstensil <= 1) {
+    suggestionsUstensil.classList.remove('toomuch');
+    suggestionsUstensil.classList.remove('various3');
+    suggestionsUstensil.classList.remove('various2');
+  } else if (factorUstensil > 1 && factorUstensil <= 2) {
+    suggestionsUstensil.classList.remove('toomuch');
+    suggestionsUstensil.classList.remove('various3');
+    suggestionsUstensil.classList.add('various2');
+  } else {
+    suggestionsUstensil.classList.add('various3');
+    suggestionsUstensil.classList.add('toomuch');
   }
   for (let i = 0; i < ustensilArray.length; i += 1) {
     const li = document.createElement('li');
@@ -210,5 +214,3 @@ function testFilter() {
 }
 
 searchInput.addEventListener('keyup', testFilter);
-
-init();

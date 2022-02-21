@@ -12,12 +12,11 @@
   display: flex;
   justify-content: start;
   padding-right: 1rem;
-  max-height: 180px;
+  max-height: 100px;
 }
 
 .recipes {
   display: flex;
-  justify-content: space-between;
 }
 
 .recipes.container {
@@ -88,7 +87,7 @@
 .toomuch {
   column-count: 3;
   column-width: auto;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 ul {
@@ -283,4 +282,24 @@ ul {
   text-align: center;
   color: white;
   margin-left: 30px;
+}
+
+.message {
+  background-color: #e7e7e7;
+  border-radius: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 80px auto;
+  width: 60%;
+}
+
+.phrase {
+  padding-top: 30px;
+}
+
+.subPhrase {
+  padding-top: 15px;
+  padding-bottom: 30px;
 }

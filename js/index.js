@@ -10,10 +10,25 @@ function getCollection() {
 }
 
 function displayCards(collection) {
-  for (let i = 0; i < collection.length; i += 1) {
-    const filterModel = cardRecipeFactory(collection[i]);
-    const cardRecipeDOM = filterModel.getCardRecipeDOM();
-    recipesSection.appendChild(cardRecipeDOM);
+  if (collection.length < 1) {
+    const message = document.createElement('div');
+    message.className = 'message';
+    const phrase = document.createElement('h4');
+    phrase.className = 'phrase';
+    phrase.textContent = 'Aucune recette ne correspond à votre critère…';
+    const subPhrase = document.createElement('h5');
+    subPhrase.className = 'subPhrase';
+    subPhrase.textContent =
+      'Vous pouvez chercher « tarte aux pommes », « poisson », etc.';
+    message.appendChild(phrase);
+    message.appendChild(subPhrase);
+    recipesSection.appendChild(message);
+  } else {
+    for (let i = 0; i < collection.length; i += 1) {
+      const filterModel = cardRecipeFactory(collection[i]);
+      const cardRecipeDOM = filterModel.getCardRecipeDOM();
+      recipesSection.appendChild(cardRecipeDOM);
+    }
   }
 }
 

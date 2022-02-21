@@ -14,7 +14,6 @@ function checkTags() {
     badges = JSON.parse(localStorage.getItem('badges'));
     if (badges.length > 0) {
       filteredTags = searchTags(badges);
-      console.log(filteredTags);
       resetDisplayCards();
       resetDisplayFilters();
       displayCards(filteredTags);
@@ -58,7 +57,6 @@ function closeIcon(item) {
 
 function searchTags(item) {
   const lastRecipes = getCollection();
-  console.log(lastRecipes);
   const filteredTags = [];
 
   for (let i = 0; i < lastRecipes.length; i += 1) {
@@ -77,22 +75,17 @@ function searchTags(item) {
       ingredientArray.push(lastRecipes[i].ustensils[j].toUpperCase());
     }
 
-    console.log(ingredientArray);
-
     for (let k = 0; k < item.length; k += 1) {
       const value = item[k].toUpperCase();
-      console.log(value);
       if (ingredientArray.includes(value)) {
         count[k] = 'true';
       } else {
         count[k] = 'false';
       }
     }
-    console.log(count);
     if (!count.includes('false')) {
       filteredTags.push(lastRecipes[i]);
     }
   }
-  console.log(filteredTags);
   return filteredTags;
 }

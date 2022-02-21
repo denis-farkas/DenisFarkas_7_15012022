@@ -61,15 +61,23 @@ function openSuggestionsUstensil() {
   window.addEventListener('click', closeSuggestionsUstensil);
 }
 
-function handleInputUstensil(event) {
-  const userInput = event.target.value;
-  if (userInput.length > 2) {
-    searchUstensil(userInput);
-    openSuggestionsUstensil();
+function handleInputUstensil() {
+  const userInput = searchInputUstensil.value;
+  if (userInput === undefined) {
+    const searchInp = searchInput.value;
+    if (searchInp === undefined) {
+      getOptionsUstensil(recipes);
+      openSuggestionsUstensil();
+    } else {
+      const filteredUstensil = JSON.parse(
+        localStorage.getItem('filteredUstensil')
+      );
+      getOptionsUstensil(filteredUstensil);
+      openSuggestionsUstensil();
+    }
   } else {
-    // eslint-disable-next-line no-undef
-    getOptionsUstensils(filteredRecipes);
-    closeSuggestionsUstensil();
+    searchIUstensil(userInput);
+    openSuggestionsUstensil(); // show the suggestions if the user typed something
   }
 }
 
