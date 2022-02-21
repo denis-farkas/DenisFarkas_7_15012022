@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 function cardRecipeFactory(item) {
   const { id } = item;
   const { name } = item;
@@ -98,3 +97,5 @@ function cardRecipeFactory(item) {
   }
   return { getCardRecipeDOM };
 }
+
+export default cardRecipeFactory;

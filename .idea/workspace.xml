@@ -23,13 +23,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="dd397a36-f374-4f46-a8cd-785cebf8aa6e" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.eslintrc.json" beforeDir="false" afterPath="$PROJECT_DIR$/.eslintrc.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/api/ingredients.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/api/ingredients.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/api/tags.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/api/tags.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/js/api/ustensils.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/api/ustensils.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/data/recipes.js" beforeDir="false" afterPath="$PROJECT_DIR$/data/recipes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/js/factory/cardRecipe.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/factory/cardRecipe.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/js/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/js/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,6 +72,7 @@
       <workItem from="1645222964088" duration="217000" />
       <workItem from="1645223390898" duration="901000" />
       <workItem from="1645224309658" duration="216000" />
+      <workItem from="1645458473416" duration="8000" />
     </task>
     <servers />
   </component>

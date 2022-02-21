@@ -1,16 +1,18 @@
-/* eslint-disable no-undef */
+import cardRecipeFactory from './factory/cardRecipe.js';
+import recipes from '../data/recipes.js';
+
 const recipesSection = document.querySelector('main');
 function setCollection(collection) {
   localStorage.setItem('Repository', JSON.stringify(collection));
 }
 
-function getCollection() {
+export function getCollection() {
   let Repository = localStorage.getItem('Repository');
   Repository = JSON.parse(Repository);
   return Repository;
 }
 
-function displayCards(collection) {
+export function displayCards(collection) {
   if (collection.length < 1) {
     const message = document.createElement('div');
     message.className = 'message';
@@ -33,17 +35,17 @@ function displayCards(collection) {
   }
 }
 
-function resetDisplayCards() {
+export function resetDisplayCards() {
   recipesSection.innerHTML = '';
 }
 
-function resetDisplayFilters() {
+export function resetDisplayFilters() {
   suggestionsIngredient.innerHTML = '';
   suggestionsAppliance.innerHTML = '';
   suggestionsUstensil.innerHTML = '';
 }
 
-function init() {
+export function init() {
   localStorage.clear();
   resetDisplayCards();
   resetDisplayFilters();
