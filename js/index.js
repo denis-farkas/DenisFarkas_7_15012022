@@ -5,6 +5,7 @@ import {
   suggestionsAppliance,
   suggestionsUstensil,
 } from './selectors.js';
+import { getAppliances, getUstensils, getIngredients } from './functions.js';
 
 const recipesSection = document.querySelector('main');
 function setCollection(collection) {
@@ -57,11 +58,9 @@ export function init() {
   setCollection(recipes);
   const allRecipes = getCollection();
   displayCards(allRecipes);
-  getOptionsIngredients(allRecipes);
-  getOptionsAppliance(allRecipes);
-  getOptionsUstensils(allRecipes);
+  getIngredients(allRecipes);
+  getAppliances(allRecipes);
+  getUstensils(allRecipes);
 }
-
-li.setAttribute('onclick', `selectOption("${li.textContent}", "ingredient")`);
 
 init();

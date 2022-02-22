@@ -5,14 +5,13 @@ import {
 } from './selectors.js';
 
 export function getIngredients(collection) {
-  const ingredientArray = [];
+  const ingredientArray = new Set();
+
   collection.forEach((element) => {
-    element.ingredients.forEach((ingredient) => {
-      if (!ingredientArray.includes(ingredient)) {
-        ingredientArray.push(ingredient);
-      }
+    element.ingredients.forEach((item) => {
+      ingredientArray.add(item.ingredient);
     });
-  }); // utiliser set
+  });
 
   localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));
 
@@ -32,12 +31,84 @@ export function getIngredients(collection) {
 
   ingredientArray.forEach((element) => {
     const li = document.createElement('li');
-    li.id = `optionIngredient-${i}`;
-    li.role = 'option'; // necessary for any children of a role="listbox"
+    li.id = `option-${element}`;
     li.textContent = element;
-    li.className = 'option Ingredient';
+    li.className = 'option ingredient';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "ingredient")`
+    );
     suggestionsIngredient.appendChild(li);
   });
 }
 
-export function getAppliance() {}
+export function getAppliances(collection) {
+  const applianceArray = new Set();
+
+  collection.forEach((element) => {
+    applianceArray.add(element.appliance);
+  });
+
+  localStorage.setItem('filteredAppliance', JSON.stringify(applianceArray));
+
+  suggestionsAppliance.innerHTML = '';
+
+  if (applianceArray.length > 10) {
+    const factor = applianceArray.length / 10;
+    if (factor > 1 && factor <= 2) {
+      suggestionsAppliance.classList.remove('toomuch');
+      suggestionsAppliance.classList.remove('various3');
+      suggestionsAppliance.classList.add('various2');
+    } else if (factor > 2) {
+      suggestionsAppliance.classList.add('various3');
+      suggestionsAppliance.classList.add('toomuch');
+    }
+  }
+
+  applianceArray.forEach((element) => {
+    const li = document.createElement('li');
+    li.id = `option-${element}`;
+    li.textContent = element;
+    li.className = 'option appliance';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "appliance")`
+    );
+    suggestionsAppliance.appendChild(li);
+  });
+}
+
+export function getUstensils(collection) {
+  const ustensilArray = new Set();
+
+  collection.forEach((element) => {
+    element.ustensils.forEach((item) => {
+      ustensilArray.add(item);
+    });
+  });
+
+  localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));
+
+  suggestionsUstensil.innerHTML = '';
+
+  if (ustensilArray.size > 10) {
+    const factor = ustensilArray.size / 10;
+    if (factor > 1 && factor <= 2) {
+      suggestionsUstensil.classList.remove('toomuch');
+      suggestionsUstensil.classList.remove('various3');
+      suggestionsUstensil.classList.add('various2');
+    } else if (factor > 2) {
+      suggestionsUstensil.classList.add('various3');
+      suggestionsUstensil.classList.add('toomuch');
+    }
+  }
+
+  ustensilArray.forEach((element) => {
+    const li = document.createElement('li');
+    li.id = `option-${element}`;
+    li.textContent = element;
+    li.className = 'option ustensil';
+    li.setAttribute('onclick', `selectOption("${li.textContent}", "ustensil")`);
+    suggestionsUstensil.appendChild(li);
+  });
+}
