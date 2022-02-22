@@ -1,5 +1,10 @@
 import cardRecipeFactory from './factory/cardRecipe.js';
 import recipes from '../data/recipes.js';
+import {
+  suggestionsIngredient,
+  suggestionsAppliance,
+  suggestionsUstensil,
+} from './selectors.js';
 
 const recipesSection = document.querySelector('main');
 function setCollection(collection) {
@@ -56,5 +61,7 @@ export function init() {
   getOptionsAppliance(allRecipes);
   getOptionsUstensils(allRecipes);
 }
+
+li.setAttribute('onclick', `selectOption("${li.textContent}", "ingredient")`);
 
 init();
