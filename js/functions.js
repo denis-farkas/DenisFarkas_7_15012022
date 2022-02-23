@@ -2,113 +2,103 @@ import {
   suggestionsIngredient,
   suggestionsAppliance,
   suggestionsUstensil,
+  recipesSection,
+  searchInput,
 } from './selectors.js';
 
-export function getIngredients(collection) {
-  const ingredientArray = new Set();
+import { getOptionsIngredients } from './ingredientFunctions.js';
+import { getOptionsAppliances } from './applianceFuntions.js';
+import { getOptionsUstensils } from './ustensilFunctions.js';
 
-  collection.forEach((element) => {
-    element.ingredients.forEach((item) => {
-      ingredientArray.add(item.ingredient);
-    });
-  });
+import cardRecipeFactory from './factory/cardRecipe.js';
 
-  localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));
+import recipes from '../data/recipes.js';
 
+export function setCollection(collection) {
+  localStorage.setItem('Repository', JSON.stringify(collection));
+}
+
+export function getCollection() {
+  let Repository = localStorage.getItem('Repository');
+  Repository = JSON.parse(Repository);
+  return Repository;
+}
+
+export function displayCards(collection) {
+  if (collection.length < 1) {
+    const message = document.createElement('div');
+    message.className = 'message';
+    const phrase = document.createElement('h4');
+    phrase.className = 'phrase';
+    phrase.textContent = 'Aucune recette ne correspond à votre critère…';
+    const subPhrase = document.createElement('h5');
+    subPhrase.className = 'subPhrase';
+    subPhrase.textContent =
+      'Vous pouvez chercher « tarte aux pommes », « poisson », etc.';
+    message.appendChild(phrase);
+    message.appendChild(subPhrase);
+    recipesSection.appendChild(message);
+  } else {
+    for (let i = 0; i < collection.length; i += 1) {
+      const filterModel = cardRecipeFactory(collection[i]);
+      const cardRecipeDOM = filterModel.getCardRecipeDOM();
+      recipesSection.appendChild(cardRecipeDOM);
+    }
+  }
+}
+
+export function resetDisplayCards() {
+  recipesSection.innerHTML = '';
+}
+
+export function resetDisplayFilters() {
   suggestionsIngredient.innerHTML = '';
-
-  if (ingredientArray.length > 10) {
-    const factor = ingredientArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsIngredient.classList.remove('toomuch');
-      suggestionsIngredient.classList.remove('various3');
-      suggestionsIngredient.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsIngredient.classList.add('various3');
-      suggestionsIngredient.classList.add('toomuch');
-    }
-  }
-
-  ingredientArray.forEach((element) => {
-    const li = document.createElement('li');
-    li.id = `option-${element}`;
-    li.textContent = element;
-    li.className = 'option ingredient';
-    li.setAttribute(
-      'onclick',
-      `selectOption("${li.textContent}", "ingredient")`
-    );
-    suggestionsIngredient.appendChild(li);
-  });
-}
-
-export function getAppliances(collection) {
-  const applianceArray = new Set();
-
-  collection.forEach((element) => {
-    applianceArray.add(element.appliance);
-  });
-
-  localStorage.setItem('filteredAppliance', JSON.stringify(applianceArray));
-
   suggestionsAppliance.innerHTML = '';
-
-  if (applianceArray.length > 10) {
-    const factor = applianceArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsAppliance.classList.remove('toomuch');
-      suggestionsAppliance.classList.remove('various3');
-      suggestionsAppliance.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsAppliance.classList.add('various3');
-      suggestionsAppliance.classList.add('toomuch');
-    }
-  }
-
-  applianceArray.forEach((element) => {
-    const li = document.createElement('li');
-    li.id = `option-${element}`;
-    li.textContent = element;
-    li.className = 'option appliance';
-    li.setAttribute(
-      'onclick',
-      `selectOption("${li.textContent}", "appliance")`
-    );
-    suggestionsAppliance.appendChild(li);
-  });
+  suggestionsUstensil.innerHTML = '';
 }
 
-export function getUstensils(collection) {
-  const ustensilArray = new Set();
+export function init() {
+  localStorage.clear();
+  resetDisplayCards();
+  resetDisplayFilters();
+  setCollection(recipes);
+  const allRecipes = getCollection();
+  displayCards(allRecipes);
+  getOptionsIngredients(allRecipes);
+  getOptionsAppliances(allRecipes);
+  getOptionsUstensils(allRecipes);
+}
 
-  collection.forEach((element) => {
-    element.ustensils.forEach((item) => {
-      ustensilArray.add(item);
-    });
-  });
+/* Fonction de recherche globale */
 
-  localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));
-
-  suggestionsUstensil.innerHTML = '';
-
-  if (ustensilArray.size > 10) {
-    const factor = ustensilArray.size / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsUstensil.classList.remove('toomuch');
-      suggestionsUstensil.classList.remove('various3');
-      suggestionsUstensil.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsUstensil.classList.add('various3');
-      suggestionsUstensil.classList.add('toomuch');
+export function search(Filter) {
+  const filteredRecipes = [];
+  recipes.forEach((recipe) => {
+    if (
+      recipe.name.toUpperCase().includes(Filter) ||
+      recipe.description.toUpperCase().includes(Filter) ||
+      recipe.ingredients.filter((ingredients) =>
+        ingredients.ingredient.toUpperCase().includes(Filter)
+      ).length > 0
+    ) {
+      filteredRecipes.push(recipe);
     }
-  }
-
-  ustensilArray.forEach((element) => {
-    const li = document.createElement('li');
-    li.id = `option-${element}`;
-    li.textContent = element;
-    li.className = 'option ustensil';
-    li.setAttribute('onclick', `selectOption("${li.textContent}", "ustensil")`);
-    suggestionsUstensil.appendChild(li);
   });
+
+  resetDisplayCards();
+  resetDisplayFilters();
+  displayCards(filteredRecipes);
+  getOptionsIngredients(filteredRecipes);
+  getOptionsAppliances(filteredRecipes);
+  getOptionsUstensils(filteredRecipes);
+  localStorage.setItem('Repository', JSON.stringify(filteredRecipes));
+}
+
+export function testFilter() {
+  const Filter = searchInput.value.toUpperCase();
+  if (Filter.length > 2) {
+    search(Filter);
+  } else {
+    init();
+  }
 }
