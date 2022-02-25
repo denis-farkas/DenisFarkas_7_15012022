@@ -22,19 +22,24 @@ export function getIngredients(collection) {
 export function getOptionsIngredients(collection) {
   const ingredientArray = getIngredients(collection);
 
-  localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));
+  localStorage.setItem(
+    'filteredIngredient',
+    JSON.stringify([...ingredientArray])
+  );
   suggestionsIngredient.innerHTML = '';
 
-  if (ingredientArray.size > 10) {
-    const factor = ingredientArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsIngredient.classList.remove('toomuch');
-      suggestionsIngredient.classList.remove('various3');
-      suggestionsIngredient.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsIngredient.classList.add('various3');
-      suggestionsIngredient.classList.add('toomuch');
-    }
+  const factor = ingredientArray.size / 10;
+  if (factor <= 1) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.remove('various2');
+  } else if (factor > 1 && factor <= 2) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.add('various2');
+  } else {
+    suggestionsIngredient.classList.add('various3');
+    suggestionsIngredient.classList.add('toomuch');
   }
 
   ingredientArray.forEach((element) => {
@@ -51,48 +56,47 @@ export function getOptionsIngredients(collection) {
 }
 
 export function getFilteredIngredient() {
-  let filteredIngredient = [];
+  let filteredIngredient;
   if (localStorage.getItem('filteredIngredient')) {
     filteredIngredient = localStorage.getItem('filteredIngredient');
     filteredIngredient = JSON.parse(filteredIngredient);
   } else {
-    filteredIngredient = getOptionsIngredients(recipes);
+    filteredIngredient = getIngredients(recipes);
   }
   return filteredIngredient;
 }
 
 export function searchIngredient(filter) {
   const filteredIngredient = getFilteredIngredient();
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
+  console.log(filteredIngredient);
 
-    const filteredIngredientArray = new Set();
+  const Filter = filter.toUpperCase();
 
-    filteredIngredient.forEach((element) => {
-      element.ingredients.forEach((item) => {
-        if (!item.includes(Filter)) {
-          filteredIngredientArray.add(item.ingredient);
-        }
-      });
-    });
+  const filteredIngredientArray = new Set();
 
-    suggestionsIngredient.innerHTML = '';
-    suggestionsIngredient.classList.remove('toomuch');
-    suggestionsIngredient.classList.remove('various3');
-    suggestionsIngredient.classList.remove('various2');
+  filteredIngredient.forEach((element) => {
+    const ingredientValue = element.toUpperCase();
+    if (ingredientValue.includes(Filter)) {
+      filteredIngredientArray.add(element);
+    }
+  });
 
-    filteredIngredientArray.forEach((element) => {
-      const li = document.createElement('li');
-      li.id = `option-${element}`;
-      li.textContent = element;
-      li.className = 'option ingredient';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "ingredient")`
-      );
-      suggestionsIngredient.appendChild(li);
-    });
-  }
+  suggestionsIngredient.innerHTML = '';
+  suggestionsIngredient.classList.remove('toomuch');
+  suggestionsIngredient.classList.remove('various3');
+  suggestionsIngredient.classList.remove('various2');
+
+  filteredIngredientArray.forEach((element) => {
+    const li = document.createElement('li');
+    li.id = `option-${element}`;
+    li.textContent = element;
+    li.className = 'option ingredient';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "ingredient")`
+    );
+    suggestionsIngredient.appendChild(li);
+  });
 }
 
 function closeSuggestionsIngredient() {
@@ -107,22 +111,17 @@ function openSuggestionsIngredient() {
 }
 
 export function handleInputIngredient() {
-  const userInput = searchInputIngredient.value;
-  if (userInput === undefined) {
-    const searchInp = searchInput.value;
-    if (searchInp === undefined) {
+  if (searchInput.length <= 2) {
+    if (searchInputIngredient <= 2) {
       getOptionsIngredients(recipes);
       openSuggestionsIngredient();
     } else {
-      const filteredIngredient = JSON.parse(
-        localStorage.getItem('filteredIngredient')
-      );
-      getOptionsIngredients(filteredIngredient);
+      searchIngredient(searchInputIngredient);
       openSuggestionsIngredient();
     }
   } else {
-    searchIngredient(userInput);
-    openSuggestionsIngredient(); // show the suggestions if the user typed something
+    searchIngredient(searchInputIngredient);
+    openSuggestionsIngredient();
   }
 }
 

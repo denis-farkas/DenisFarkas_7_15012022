@@ -84,7 +84,7 @@ export function search(Filter) {
       filteredRecipes.push(recipe);
     }
   });
-
+  console.log(filteredRecipes);
   resetDisplayCards();
   resetDisplayFilters();
   displayCards(filteredRecipes);
@@ -101,4 +101,39 @@ export function testFilter() {
   } else {
     init();
   }
+}
+
+export function searchTags(item) {
+  const lastRecipes = getCollection();
+  const filteredTags = [];
+
+  for (let i = 0; i < lastRecipes.length; i += 1) {
+    const ingredientArray = [];
+    const count = [];
+
+    for (let j = 0; j < lastRecipes[i].ingredients.length; j += 1) {
+      ingredientArray.push(
+        lastRecipes[i].ingredients[j].ingredient.toUpperCase()
+      );
+    }
+
+    ingredientArray.push(lastRecipes[i].appliance.toUpperCase());
+
+    for (let j = 0; j < lastRecipes[i].ustensils.length; j += 1) {
+      ingredientArray.push(lastRecipes[i].ustensils[j].toUpperCase());
+    }
+
+    for (let k = 0; k < item.length; k += 1) {
+      const value = item[k].toUpperCase();
+      if (ingredientArray.includes(value)) {
+        count[k] = 'true';
+      } else {
+        count[k] = 'false';
+      }
+    }
+    if (!count.includes('false')) {
+      filteredTags.push(lastRecipes[i]);
+    }
+  }
+  return filteredTags;
 }
