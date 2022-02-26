@@ -4,11 +4,11 @@ import {
   displayCards,
   searchTags,
   testFilter,
-} from './functions';
+} from './functions.js';
 
-import { getOptionsIngredients } from './ingredientFunctions';
-import { getOptionsAppliances } from './applianceFuntions';
-import { getOptionsUstensils } from './ustensilFunctions';
+import { getOptionsIngredients } from './ingredientFunctions.js';
+import { getOptionsAppliances } from './applianceFuntions.js';
+import { getOptionsUstensils } from './ustensilFunctions.js';
 
 const tags = document.getElementById('tags');
 let badges = [];
@@ -21,7 +21,7 @@ function removeOption(item, array) {
   }
 }
 
-function checkTags() {
+export function checkTags() {
   if (localStorage.getItem('badges')) {
     badges = JSON.parse(localStorage.getItem('badges'));
     if (badges.length > 0) {

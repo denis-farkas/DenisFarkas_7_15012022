@@ -100,6 +100,7 @@ export function searchIngredient(filter) {
 }
 
 function closeSuggestionsIngredient() {
+  searchInputIngredient.value = '';
   suggestionsIngredient.hidden = true; // hide popup
   autocompleteIngredient.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
   window.removeEventListener('click', closeSuggestionsIngredient); // don't need this anymore once it's closed
@@ -111,17 +112,20 @@ function openSuggestionsIngredient() {
 }
 
 export function handleInputIngredient() {
-  if (searchInput.length <= 2) {
-    if (searchInputIngredient <= 2) {
+  const userInput = searchInputIngredient.value;
+  if (!userInput) {
+    const searchInp = searchInput.value;
+    if (!searchInp) {
       getOptionsIngredients(recipes);
       openSuggestionsIngredient();
     } else {
-      searchIngredient(searchInputIngredient);
+      const filteredIngredient = JSON.parse(localStorage.getItem('Repository'));
+      getOptionsIngredients(filteredIngredient);
       openSuggestionsIngredient();
     }
   } else {
-    searchIngredient(searchInputIngredient);
-    openSuggestionsIngredient();
+    searchIngredient(userInput);
+    openSuggestionsIngredient(); // show the suggestions if the user typed something
   }
 }
 

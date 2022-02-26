@@ -99,6 +99,7 @@ export function searchUstensil(filter) {
 }
 
 function closeSuggestionsUstensil() {
+  searchInputUstensil.value = '';
   suggestionsUstensil.hidden = true; // hide popup
   autocompleteUstensil.setAttribute('aria-expanded', false);
   window.removeEventListener('click', closeSuggestionsUstensil);

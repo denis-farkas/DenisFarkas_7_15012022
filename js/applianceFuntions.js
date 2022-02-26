@@ -100,6 +100,7 @@ function searchAppliance(filter) {
 }
 
 function closeSuggestionsAppliance() {
+  searchInputAppliance.value = '';
   suggestionsAppliance.hidden = true; // hide popup
   autocompleteAppliance.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
   window.removeEventListener('click', closeSuggestionsAppliance); // don't need this anymore once it's closed
