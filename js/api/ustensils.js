@@ -20,39 +20,53 @@ function getFilteredUstensil() {
 function searchUstensil(filter) {
   const filteredUstensil = getFilteredUstensil();
 
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
+  const Filter = filter.toUpperCase();
 
-    for (let i = 0; i < filteredUstensil.length; i += 1) {
-      const ustensilValue = filteredUstensil[i].toUpperCase();
-      if (ustensilValue.includes(Filter)) {
-        if (!ustensilFiltered.includes(filteredUstensil[i])) {
-          ustensilFiltered.push(filteredUstensil[i]);
-        }
+  for (let i = 0; i < filteredUstensil.length; i += 1) {
+    const ustensilValue = filteredUstensil[i].toUpperCase();
+    let count = 0;
+    for (let j = 0; j < Filter.length; j += 1) {
+      const char = Filter.charAt(j);
+      const charFiltered = ustensilValue.charAt(j);
+      if (char === charFiltered) {
+        count += 1;
       }
     }
+    if (count === Filter.length)
+      if (!ustensilFiltered.includes(filteredUstensil[i])) {
+        ustensilFiltered.push(filteredUstensil[i]);
+      }
+  }
+  console.log(filteredUstensil);
 
-    suggestionsUstensil.innerHTML = '';
+  suggestionsUstensil.innerHTML = '';
+  const factorUstensil = ustensilFiltered.length / 10;
+  if (factorUstensil <= 1) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
+  } else if (factorUstensil > 1 && factorUstensil <= 2) {
+    suggestionsUstensil.classList.remove('toomuch');
+    suggestionsUstensil.classList.remove('various3');
+    suggestionsUstensil.classList.add('various2');
+  } else {
+    suggestionsUstensil.classList.add('various3');
+    suggestionsUstensil.classList.add('toomuch');
+  }
 
-    for (let i = 0; i < ustensilFiltered.length; i += 1) {
-      const li = document.createElement('li');
-      li.id = `optionUstensil-${i}`;
-      li.role = 'option';
-      li.textContent = ustensilFiltered[i];
-      li.className = 'option ustensil';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "ustensil")`
-      );
-      suggestionsUstensil.appendChild(li);
-    }
+  for (let i = 0; i < ustensilFiltered.length; i += 1) {
+    const li = document.createElement('li');
+    li.id = `optionUstensil-${i}`;
+    li.role = 'option';
+    li.textContent = ustensilFiltered[i];
+    li.className = 'option ustensil';
+    li.setAttribute('onclick', `selectOption("${li.textContent}", "ustensil")`);
+    suggestionsUstensil.appendChild(li);
   }
 }
 
 function closeSuggestionsUstensil() {
+  searchInputUstensil.value = '';
   suggestionsUstensil.hidden = true; // hide popup
   autocompleteUstensil.setAttribute('aria-expanded', false);
   window.removeEventListener('click', closeSuggestionsUstensil);
@@ -65,9 +79,9 @@ function openSuggestionsUstensil() {
 
 function handleInputUstensil() {
   const userInput = searchInputUstensil.value;
-  if (userInput === undefined) {
+  if (!userInput) {
     const searchInp = searchInput.value;
-    if (searchInp === undefined) {
+    if (!searchInp) {
       getOptionsUstensil(recipes);
       openSuggestionsUstensil();
     } else {
@@ -78,7 +92,7 @@ function handleInputUstensil() {
       openSuggestionsUstensil();
     }
   } else {
-    searchIUstensil(userInput);
+    searchUstensil(userInput);
     openSuggestionsUstensil(); // show the suggestions if the user typed something
   }
 }
