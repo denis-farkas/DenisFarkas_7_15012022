@@ -20,34 +20,44 @@ function getFilteredAppliance() {
 function searchAppliance(filter) {
   const filteredAppliance = getFilteredAppliance();
 
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
-    for (let i = 0; i < filteredAppliance.length; i += 1) {
-      const applianceValue = filteredAppliance[i].toUpperCase();
-      if (applianceValue.includes(Filter)) {
-        if (!applianceFiltered.includes(filteredAppliance[i])) {
-          applianceFiltered.push(filteredAppliance[i]);
-        }
+  suggestionsAppliance.innerHTML = '';
+
+  const Filter = filter.toUpperCase();
+  for (let i = 0; i < filteredAppliance.length; i += 1) {
+    const applianceValue = filteredAppliance[i].toUpperCase();
+    if (applianceValue.substr(0, Filter.length) === Filter) {
+      if (!applianceFiltered.includes(filteredAppliance[i])) {
+        applianceFiltered.push(filteredAppliance[i]);
       }
     }
+  }
 
-    suggestionsAppliance.innerHTML = '';
+  const factor = applianceFiltered.length / 10;
+
+  if (factor <= 1) {
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
+  } else if (factor <= 2) {
+    suggestionsAppliance.classList.remove('toomuch');
+    suggestionsAppliance.classList.remove('various3');
+    suggestionsAppliance.classList.add('various2');
+  } else {
+    suggestionsAppliance.classList.add('various3');
+    suggestionsAppliance.classList.add('toomuch');
+  }
 
-    for (let i = 0; i < applianceFiltered.length; i += 1) {
-      const li = document.createElement('li');
-      li.id = `optionAppliance-${i}`;
-      li.role = 'option';
-      li.textContent = applianceFiltered[i];
-      li.className = 'option appliance';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "appliance")`
-      );
-      suggestionsAppliance.appendChild(li);
-    }
+  for (let i = 0; i < applianceFiltered.length; i += 1) {
+    const li = document.createElement('li');
+    li.id = `optionAppliance-${i}`;
+    li.role = 'option';
+    li.textContent = applianceFiltered[i];
+    li.className = 'option appliance';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "appliance")`
+    );
+    suggestionsAppliance.appendChild(li);
   }
 }
 
@@ -66,16 +76,14 @@ function openSuggestionsAppliance() {
 
 function handleInputAppliance() {
   const userInput = searchInputAppliance.value;
-  if (userInput === undefined) {
+  if (!userInput) {
     const searchInp = searchInput.value;
-    if (searchInp === undefined) {
+    if (!searchInp) {
       getOptionsAppliance(recipes);
       openSuggestionsAppliance();
     } else {
-      const filteredAppliance = JSON.parse(
-        localStorage.getItem('filteredAppliance')
-      );
-      getOptionsAppliance(filteredAppliance);
+      const filteredAppliance = JSON.parse(localStorage.getItem('Repository'));
+      getOptionsAppliances(filteredAppliance);
       openSuggestionsAppliance();
     }
   } else {
