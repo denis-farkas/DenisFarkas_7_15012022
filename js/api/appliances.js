@@ -4,8 +4,6 @@ const suggestionsAppliance = document.getElementById('suggestionsAppliance');
 const autocompleteAppliance = document.getElementById('autocompleteAppliance');
 const searchInputAppliance = document.getElementById('searchInputAppliance');
 
-const applianceFiltered = [];
-
 function getFilteredAppliance() {
   let filteredAppliance = [];
   if (localStorage.getItem('filteredAppliance')) {
@@ -23,11 +21,14 @@ function searchAppliance(filter) {
   suggestionsAppliance.innerHTML = '';
 
   const Filter = filter.toUpperCase();
+
+  const applianceFiltered = [];
+
   for (let i = 0; i < filteredAppliance.length; i += 1) {
     const applianceValue = filteredAppliance[i].toUpperCase();
     if (applianceValue.substr(0, Filter.length) === Filter) {
-      if (!applianceFiltered.includes(filteredAppliance[i])) {
-        applianceFiltered.push(filteredAppliance[i]);
+      if (!applianceFiltered.includes(filteredAppliance[i].toLowerCase())) {
+        applianceFiltered.push(filteredAppliance[i].toLowerCase());
       }
     }
   }
@@ -83,7 +84,7 @@ function handleInputAppliance() {
       openSuggestionsAppliance();
     } else {
       const filteredAppliance = JSON.parse(localStorage.getItem('Repository'));
-      getOptionsAppliances(filteredAppliance);
+      getOptionsAppliance(filteredAppliance);
       openSuggestionsAppliance();
     }
   } else {
@@ -95,6 +96,6 @@ function handleInputAppliance() {
 searchInputAppliance.addEventListener('input', handleInputAppliance);
 
 document.getElementById('applianceB').addEventListener('click', (event) => {
-  openSuggestionsAppliance();
+  handleInputAppliance(event);
   event.stopPropagation();
 });

@@ -108,6 +108,11 @@ ul {
   column-width: auto;
 }
 
+::-webkit-scrollbar {
+  height: 6px; /* height of horizontal scrollbar*/
+  border: 1px solid rgba(255, 255, 255, 0.63);
+}
+
 .autocomplete {
   position: relative;
   z-index: 25;
@@ -127,17 +132,17 @@ ul {
 }
 
 .ingredient {
-  border: 1px solid #3282f7;
+  border: 0.1px solid #3282f7;
   background-color: #3282f7;
 }
 
 .appliance {
-  border: 1px solid #68d9a4;
+  border: 0.1px solid #68d9a4;
   background-color: #68d9a4;
 }
 
 .ustensil {
-  border: 1px solid #ed6454;
+  border: 0.1px solid #ed6454;
   background-color: #ed6454;
 }
 

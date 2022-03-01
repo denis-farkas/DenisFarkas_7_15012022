@@ -6,8 +6,6 @@ const autocompleteIngredient = document.getElementById(
 );
 const searchInputIngredient = document.getElementById('searchInputIngredient');
 
-const ingredientFiltered = [];
-
 function getFilteredIngredient() {
   let filteredIngredient = [];
   if (localStorage.getItem('filteredIngredient')) {
@@ -25,11 +23,14 @@ function searchIngredient(filter) {
   suggestionsIngredient.innerHTML = '';
 
   const Filter = filter.toUpperCase();
+
+  const ingredientFiltered = [];
+
   for (let i = 0; i < filteredIngredient.length; i += 1) {
     const ingredientValue = filteredIngredient[i].toUpperCase();
     if (ingredientValue.substr(0, Filter.length) === Filter) {
-      if (!ingredientFiltered.includes(filteredIngredient[i])) {
-        ingredientFiltered.push(filteredIngredient[i]);
+      if (!ingredientFiltered.includes(filteredIngredient[i].toLowerCase())) {
+        ingredientFiltered.push(filteredIngredient[i].toLowerCase());
       }
     }
   }

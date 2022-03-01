@@ -15,8 +15,14 @@ function getIngredients(collection) {
   const ingredientArray = [];
   for (let i = 0; i < collection.length; i += 1) {
     for (let j = 0; j < collection[i].ingredients.length; j += 1) {
-      if (!ingredientArray.includes(collection[i].ingredients[j].ingredient)) {
-        ingredientArray.push(collection[i].ingredients[j].ingredient);
+      if (
+        !ingredientArray.includes(
+          collection[i].ingredients[j].ingredient.toLowerCase()
+        )
+      ) {
+        ingredientArray.push(
+          collection[i].ingredients[j].ingredient.toLowerCase()
+        );
       }
     }
   }
@@ -60,8 +66,8 @@ function getOptionsIngredients(collection) {
 function getAppliances(collection) {
   const applianceArray = [];
   for (let i = 0; i < collection.length; i += 1) {
-    if (!applianceArray.includes(collection[i].appliance)) {
-      applianceArray.push(collection[i].appliance);
+    if (!applianceArray.includes(collection[i].appliance.toLowerCase())) {
+      applianceArray.push(collection[i].appliance.toLowerCase());
     }
   }
   return applianceArray;
@@ -78,7 +84,7 @@ function getOptionsAppliance(collection) {
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
-  } else if (factor > 1 && factor <= 2) {
+  } else if (factor <= 2) {
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.add('various2');
@@ -105,8 +111,8 @@ function getUstensils(collection) {
   const ustensilArray = [];
   for (let i = 0; i < collection.length; i += 1) {
     for (let j = 0; j < collection[i].ustensils.length; j += 1) {
-      if (!ustensilArray.includes(collection[i].ustensils[j])) {
-        ustensilArray.push(collection[i].ustensils[j]);
+      if (!ustensilArray.includes(collection[i].ustensils[j].toLowerCase())) {
+        ustensilArray.push(collection[i].ustensils[j].toLowerCase());
       }
     }
   }
@@ -119,12 +125,12 @@ function getOptionsUstensils(collection) {
   localStorage.setItem('filteredUstensil', JSON.stringify(ustensilArray));
   suggestionsUstensil.innerHTML = '';
 
-  const factorUstensil = ustensilArray.length / 10;
-  if (factorUstensil <= 1) {
+  const factor = ustensilArray.length / 10;
+  if (factor <= 1) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
-  } else if (factorUstensil > 1 && factorUstensil <= 2) {
+  } else if (factor <= 2) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.add('various2');

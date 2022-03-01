@@ -4,8 +4,6 @@ const suggestionsUstensil = document.getElementById('suggestionsUstensil');
 const autocompleteUstensil = document.getElementById('ustensil');
 const searchInputUstensil = document.getElementById('searchInputUstensil');
 
-const ustensilFiltered = [];
-
 function getFilteredUstensil() {
   let filteredUstensil = [];
   if (localStorage.getItem('filteredUstensil')) {
@@ -20,32 +18,27 @@ function getFilteredUstensil() {
 function searchUstensil(filter) {
   const filteredUstensil = getFilteredUstensil();
 
+  suggestionsUstensil.innerHTML = '';
+
   const Filter = filter.toUpperCase();
+
+  const ustensilFiltered = [];
 
   for (let i = 0; i < filteredUstensil.length; i += 1) {
     const ustensilValue = filteredUstensil[i].toUpperCase();
-    let count = 0;
-    for (let j = 0; j < Filter.length; j += 1) {
-      const char = Filter.charAt(j);
-      const charFiltered = ustensilValue.charAt(j);
-      if (char === charFiltered) {
-        count += 1;
+    if (ustensilValue.substr(0, Filter.length) === Filter) {
+      if (!ustensilFiltered.includes(filteredUstensil[i].toLowerCase())) {
+        ustensilFiltered.push(filteredUstensil[i].toLowerCase());
       }
     }
-    if (count === Filter.length)
-      if (!ustensilFiltered.includes(filteredUstensil[i])) {
-        ustensilFiltered.push(filteredUstensil[i]);
-      }
   }
-  console.log(filteredUstensil);
 
-  suggestionsUstensil.innerHTML = '';
-  const factorUstensil = ustensilFiltered.length / 10;
-  if (factorUstensil <= 1) {
+  const factor = ustensilFiltered.length / 10;
+  if (factor <= 1) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
-  } else if (factorUstensil > 1 && factorUstensil <= 2) {
+  } else if (factor <= 2) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.add('various2');
@@ -82,13 +75,11 @@ function handleInputUstensil() {
   if (!userInput) {
     const searchInp = searchInput.value;
     if (!searchInp) {
-      getOptionsUstensil(recipes);
+      getOptionsUstensils(recipes);
       openSuggestionsUstensil();
     } else {
-      const filteredUstensil = JSON.parse(
-        localStorage.getItem('filteredUstensil')
-      );
-      getOptionsUstensil(filteredUstensil);
+      const filteredUstensil = JSON.parse(localStorage.getItem('Repository'));
+      getOptionsUstensils(filteredUstensil);
       openSuggestionsUstensil();
     }
   } else {
@@ -100,6 +91,6 @@ function handleInputUstensil() {
 searchInputUstensil.addEventListener('input', handleInputUstensil);
 
 document.getElementById('ustensilB').addEventListener('click', (event) => {
-  openSuggestionsUstensil();
+  handleInputUstensil(event);
   event.stopPropagation();
 });
