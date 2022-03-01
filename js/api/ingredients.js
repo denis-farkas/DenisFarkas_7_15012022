@@ -14,41 +14,52 @@ function getFilteredIngredient() {
     filteredIngredient = localStorage.getItem('filteredIngredient');
     filteredIngredient = JSON.parse(filteredIngredient);
   } else {
-    filteredIngredient = getOptionsIngredients(recipes);
+    filteredIngredient = getIngredients(recipes);
   }
   return filteredIngredient;
 }
 
 function searchIngredient(filter) {
   const filteredIngredient = getFilteredIngredient();
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
-    for (let i = 0; i < filteredIngredient.length; i += 1) {
-      const ingredientValue = filteredIngredient[i].toUpperCase();
-      if (ingredientValue.includes(Filter)) {
-        if (!ingredientFiltered.includes(filteredIngredient[i])) {
-          ingredientFiltered.push(filteredIngredient[i]);
-        }
+
+  suggestionsIngredient.innerHTML = '';
+
+  const Filter = filter.toUpperCase();
+  for (let i = 0; i < filteredIngredient.length; i += 1) {
+    const ingredientValue = filteredIngredient[i].toUpperCase();
+    if (ingredientValue.substr(0, Filter.length) === Filter) {
+      if (!ingredientFiltered.includes(filteredIngredient[i])) {
+        ingredientFiltered.push(filteredIngredient[i]);
       }
     }
+  }
 
-    suggestionsIngredient.innerHTML = '';
+  const factor = ingredientFiltered.length / 10;
+
+  if (factor <= 1) {
     suggestionsIngredient.classList.remove('toomuch');
     suggestionsIngredient.classList.remove('various3');
     suggestionsIngredient.classList.remove('various2');
+  } else if (factor <= 2) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.add('various2');
+  } else {
+    suggestionsIngredient.classList.add('various3');
+    suggestionsIngredient.classList.add('toomuch');
+  }
 
-    for (let i = 0; i < ingredientFiltered.length; i += 1) {
-      const li = document.createElement('li');
-      li.id = `optionIngredient-${i}`;
-      li.role = 'option';
-      li.textContent = ingredientFiltered[i];
-      li.className = 'option ingredient';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "ingredient")`
-      );
-      suggestionsIngredient.appendChild(li);
-    }
+  for (let i = 0; i < ingredientFiltered.length; i += 1) {
+    const li = document.createElement('li');
+    li.id = `optionIngredient-${i}`;
+    li.role = 'option';
+    li.textContent = ingredientFiltered[i];
+    li.className = 'option ingredient';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "ingredient")`
+    );
+    suggestionsIngredient.appendChild(li);
   }
 }
 

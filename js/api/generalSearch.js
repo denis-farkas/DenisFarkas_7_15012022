@@ -29,16 +29,18 @@ function getOptionsIngredients(collection) {
   localStorage.setItem('filteredIngredient', JSON.stringify(ingredientArray));
   suggestionsIngredient.innerHTML = '';
 
-  if (ingredientArray.length > 10) {
-    const factor = ingredientArray.length / 10;
-    if (factor > 1 && factor <= 2) {
-      suggestionsIngredient.classList.remove('toomuch');
-      suggestionsIngredient.classList.remove('various3');
-      suggestionsIngredient.classList.add('various2');
-    } else if (factor > 2) {
-      suggestionsIngredient.classList.add('various3');
-      suggestionsIngredient.classList.add('toomuch');
-    }
+  const factor = ingredientArray.length / 10;
+  if (factor <= 1) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.remove('various2');
+  } else if (factor <= 2) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.add('various2');
+  } else {
+    suggestionsIngredient.classList.add('various3');
+    suggestionsIngredient.classList.add('toomuch');
   }
 
   for (let i = 0; i < ingredientArray.length; i += 1) {
