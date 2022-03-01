@@ -53,7 +53,7 @@ export function getOptionsAppliances(collection) {
   });
 }
 
-function getFilteredAppliance() {
+export function getFilteredAppliance() {
   let filteredAppliance = [];
   if (localStorage.getItem('filteredAppliance')) {
     filteredAppliance = localStorage.getItem('filteredAppliance');
@@ -64,39 +64,49 @@ function getFilteredAppliance() {
   return filteredAppliance;
 }
 
-function searchAppliance(filter) {
+export function searchAppliance(filter) {
   const filteredAppliance = getFilteredAppliance();
 
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
+  suggestionsAppliance.innerHTML = '';
 
-    const filteredApplianceArray = new Set();
+  const Filter = filter.toUpperCase();
 
-    filteredAppliance.forEach((element) => {
-      const applianceValue = element.toUpperCase();
-      if (applianceValue.includes(Filter)) {
-        filteredApplianceArray.add(element);
-      }
-    });
+  const filteredApplianceArray = new Set();
 
-    suggestionsAppliance.innerHTML = '';
+  filteredAppliance.forEach((element) => {
+    const applianceValue = element.toUpperCase();
+    if (applianceValue.substr(0, Filter.length) === Filter) {
+      filteredApplianceArray.add(element);
+    }
+  });
+
+  const factor = filteredApplianceArray.size / 10;
+
+  if (factor <= 1) {
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
-
-    filteredApplianceArray.forEach((element) => {
-      const li = document.createElement('li');
-      li.id = `option-${element}`;
-      li.role = 'option';
-      li.textContent = element;
-      li.className = 'option appliance';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "appliance")`
-      );
-      suggestionsAppliance.appendChild(li);
-    });
+  } else if (factor <= 2) {
+    suggestionsAppliance.classList.remove('toomuch');
+    suggestionsAppliance.classList.remove('various3');
+    suggestionsAppliance.classList.add('various2');
+  } else {
+    suggestionsAppliance.classList.add('various3');
+    suggestionsAppliance.classList.add('toomuch');
   }
+
+  filteredApplianceArray.forEach((element) => {
+    const li = document.createElement('li');
+    li.id = `option-${element}`;
+    li.role = 'option';
+    li.textContent = element;
+    li.className = 'option appliance';
+    li.setAttribute(
+      'onclick',
+      `selectOption("${li.textContent}", "appliance")`
+    );
+    suggestionsAppliance.appendChild(li);
+  });
 }
 
 function closeSuggestionsAppliance() {
@@ -135,6 +145,6 @@ function handleInputAppliance() {
 searchInputAppliance.addEventListener('input', handleInputAppliance);
 
 document.getElementById('applianceB').addEventListener('click', (event) => {
-  openSuggestionsAppliance();
+  handleInputAppliance(event);
   event.stopPropagation();
 });

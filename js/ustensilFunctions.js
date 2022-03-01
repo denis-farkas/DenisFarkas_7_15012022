@@ -50,13 +50,13 @@ export function getOptionsUstensils(collection) {
   });
 }
 
-function getFilteredUstensil() {
-  let filteredUstensil = [];
+export function getFilteredUstensil() {
+  let filteredUstensil;
   if (localStorage.getItem('filteredUstensil')) {
     filteredUstensil = localStorage.getItem('filteredUstensil');
     filteredUstensil = JSON.parse(filteredUstensil);
   } else {
-    filteredUstensil = getOptionsUstensils(recipes);
+    filteredUstensil = getUstensils(recipes);
   }
   return filteredUstensil;
 }
@@ -64,38 +64,43 @@ function getFilteredUstensil() {
 export function searchUstensil(filter) {
   const filteredUstensil = getFilteredUstensil();
 
-  if (filter.length > 2) {
-    const Filter = filter.toUpperCase();
+  suggestionsUstensil.innerHTML = '';
 
-    const filteredUstensilArray = new Set();
+  const Filter = filter.toUpperCase();
 
-    filteredUstensil.forEach((element) => {
-      element.ustensils.forEach((item) => {
-        const ustensilValue = item.toUpperCase();
-        if (ustensilValue.includes(Filter)) {
-          filteredUstensilArray.add(item);
-        }
-      });
-    });
+  const filteredUstensilArray = new Set();
 
-    suggestionsUstensil.innerHTML = '';
+  filteredUstensil.forEach((element) => {
+    const ustensilValue = element.toUpperCase();
+    if (ustensilValue.substr(0, Filter.length) === Filter) {
+      filteredUstensilArray.add(element);
+    }
+  });
+
+  const factor = filteredUstensilArray.size / 10;
+
+  if (factor <= 1) {
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
-
-    filteredUstensilArray.forEach((element) => {
-      const li = document.createElement('li');
-      li.id = `option-${element}`;
-      li.role = 'option';
-      li.textContent = element;
-      li.className = 'option ustensil';
-      li.setAttribute(
-        'onclick',
-        `selectOption("${li.textContent}", "ustensil")`
-      );
-      suggestionsUstensil.appendChild(li);
-    });
+  } else if (factor <= 2) {
+    suggestionsUstensil.classList.remove('toomuch');
+    suggestionsUstensil.classList.remove('various3');
+    suggestionsUstensil.classList.add('various2');
+  } else {
+    suggestionsUstensil.classList.add('various3');
+    suggestionsUstensil.classList.add('toomuch');
   }
+
+  filteredUstensilArray.forEach((element) => {
+    const li = document.createElement('li');
+    li.id = `option-${element}`;
+    li.role = 'option';
+    li.textContent = element;
+    li.className = 'option ustensil';
+    li.setAttribute('onclick', `selectOption("${li.textContent}", "ustensil")`);
+    suggestionsUstensil.appendChild(li);
+  });
 }
 
 function closeSuggestionsUstensil() {
@@ -112,15 +117,13 @@ function openSuggestionsUstensil() {
 
 function handleInputUstensil() {
   const userInput = searchInputUstensil.value;
-  if (userInput === undefined) {
+  if (!userInput) {
     const searchInp = searchInput.value;
-    if (searchInp === undefined) {
+    if (!searchInp) {
       getOptionsUstensils(recipes);
       openSuggestionsUstensil();
     } else {
-      const filteredUstensil = JSON.parse(
-        localStorage.getItem('filteredUstensil')
-      );
+      const filteredUstensil = JSON.parse(localStorage.getItem('Repository'));
       getOptionsUstensils(filteredUstensil);
       openSuggestionsUstensil();
     }
@@ -133,6 +136,6 @@ function handleInputUstensil() {
 searchInputUstensil.addEventListener('input', handleInputUstensil);
 
 document.getElementById('ustensilB').addEventListener('click', (event) => {
-  openSuggestionsUstensil();
+  handleInputUstensil(event);
   event.stopPropagation();
 });

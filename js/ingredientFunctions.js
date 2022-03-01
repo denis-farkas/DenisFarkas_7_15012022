@@ -33,7 +33,7 @@ export function getOptionsIngredients(collection) {
     suggestionsIngredient.classList.remove('toomuch');
     suggestionsIngredient.classList.remove('various3');
     suggestionsIngredient.classList.remove('various2');
-  } else if (factor > 1 && factor <= 2) {
+  } else if (factor <= 2) {
     suggestionsIngredient.classList.remove('toomuch');
     suggestionsIngredient.classList.remove('various3');
     suggestionsIngredient.classList.add('various2');
@@ -68,7 +68,8 @@ export function getFilteredIngredient() {
 
 export function searchIngredient(filter) {
   const filteredIngredient = getFilteredIngredient();
-  console.log(filteredIngredient);
+
+  suggestionsIngredient.innerHTML = '';
 
   const Filter = filter.toUpperCase();
 
@@ -76,15 +77,25 @@ export function searchIngredient(filter) {
 
   filteredIngredient.forEach((element) => {
     const ingredientValue = element.toUpperCase();
-    if (ingredientValue.includes(Filter)) {
+    if (ingredientValue.substr(0, Filter.length) === Filter) {
       filteredIngredientArray.add(element);
     }
   });
 
-  suggestionsIngredient.innerHTML = '';
-  suggestionsIngredient.classList.remove('toomuch');
-  suggestionsIngredient.classList.remove('various3');
-  suggestionsIngredient.classList.remove('various2');
+  const factor = filteredIngredientArray.size / 10;
+
+  if (factor <= 1) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.remove('various2');
+  } else if (factor <= 2) {
+    suggestionsIngredient.classList.remove('toomuch');
+    suggestionsIngredient.classList.remove('various3');
+    suggestionsIngredient.classList.add('various2');
+  } else {
+    suggestionsIngredient.classList.add('various3');
+    suggestionsIngredient.classList.add('toomuch');
+  }
 
   filteredIngredientArray.forEach((element) => {
     const li = document.createElement('li');
