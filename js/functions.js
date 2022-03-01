@@ -84,7 +84,6 @@ export function search(Filter) {
       filteredRecipes.push(recipe);
     }
   });
-  console.log(filteredRecipes);
   resetDisplayCards();
   resetDisplayFilters();
   displayCards(filteredRecipes);

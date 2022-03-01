@@ -11,7 +11,7 @@ export function getAppliances(collection) {
   const applianceArray = new Set();
 
   collection.forEach((element) => {
-    applianceArray.add(element.appliance);
+    applianceArray.add(element.appliance.toLowerCase());
   });
 
   return applianceArray;

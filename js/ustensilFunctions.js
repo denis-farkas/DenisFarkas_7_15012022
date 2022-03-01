@@ -12,7 +12,7 @@ export function getUstensils(collection) {
 
   collection.forEach((element) => {
     element.ustensils.forEach((item) => {
-      ustensilArray.add(item);
+      ustensilArray.add(item.toLowerCase());
     });
   });
 

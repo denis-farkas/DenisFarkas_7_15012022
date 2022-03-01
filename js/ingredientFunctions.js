@@ -12,7 +12,7 @@ export function getIngredients(collection) {
 
   collection.forEach((element) => {
     element.ingredients.forEach((item) => {
-      ingredientArray.add(item.ingredient);
+      ingredientArray.add(item.ingredient.toLowerCase());
     });
   });
 
