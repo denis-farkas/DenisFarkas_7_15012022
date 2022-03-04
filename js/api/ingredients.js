@@ -81,8 +81,13 @@ function handleInputIngredient() {
   if (!userInput) {
     const searchInp = searchInput.value;
     if (!searchInp) {
-      getOptionsIngredients(recipes);
-      openSuggestionsIngredient();
+      if (!localStorage.getItem('filteredTags')) {
+        getOptionsIngredients(recipes);
+        openSuggestionsIngredient();
+      } else {
+        getOptionsIngredients(filteredTags);
+        openSuggestionsIngredient();
+      }
     } else {
       const filteredIngredient = JSON.parse(localStorage.getItem('Repository'));
       getOptionsIngredients(filteredIngredient);

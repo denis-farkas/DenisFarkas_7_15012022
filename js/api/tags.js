@@ -91,5 +91,6 @@ function searchTags(item) {
       filteredTags.push(lastRecipes[i]);
     }
   }
+  localStorage.setItem('Repository', JSON.stringify(filteredTags));
   return filteredTags;
 }

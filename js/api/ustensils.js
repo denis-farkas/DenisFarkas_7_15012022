@@ -75,8 +75,13 @@ function handleInputUstensil() {
   if (!userInput) {
     const searchInp = searchInput.value;
     if (!searchInp) {
-      getOptionsUstensils(recipes);
-      openSuggestionsUstensil();
+      if (!localStorage.getItem('filteredTags')) {
+        getOptionsUstensils(recipes);
+        openSuggestionsUstensil();
+      } else {
+        getOptionsUstensils(filteredTags);
+        openSuggestionsUstensil();
+      }
     } else {
       const filteredUstensil = JSON.parse(localStorage.getItem('Repository'));
       getOptionsUstensils(filteredUstensil);

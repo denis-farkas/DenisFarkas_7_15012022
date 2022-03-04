@@ -80,8 +80,13 @@ function handleInputAppliance() {
   if (!userInput) {
     const searchInp = searchInput.value;
     if (!searchInp) {
-      getOptionsAppliance(recipes);
-      openSuggestionsAppliance();
+      if (!localStorage.getItem('filteredTags')) {
+        getOptionsAppliance(recipes);
+        openSuggestionsAppliance();
+      } else {
+        getOptionsAppliance(filteredTags);
+        openSuggestionsAppliance();
+      }
     } else {
       const filteredAppliance = JSON.parse(localStorage.getItem('Repository'));
       getOptionsAppliance(filteredAppliance);
