@@ -77,7 +77,8 @@ export function searchIngredient(filter) {
 
   filteredIngredient.forEach((element) => {
     const ingredientValue = element.toUpperCase();
-    if (ingredientValue.substr(0, Filter.length) === Filter) {
+    const isIngredient = ingredientValue.substr(0, Filter.length) === Filter;
+    if (isIngredient) {
       filteredIngredientArray.add(element);
     }
   });
