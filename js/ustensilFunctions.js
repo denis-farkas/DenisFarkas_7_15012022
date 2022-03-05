@@ -117,11 +117,17 @@ function openSuggestionsUstensil() {
 
 function handleInputUstensil() {
   const userInput = searchInputUstensil.value;
-  if (!userInput) {
+  if (userInput === undefined) {
     const searchInp = searchInput.value;
-    if (!searchInp) {
-      getOptionsUstensils(recipes);
-      openSuggestionsUstensil();
+    if (searchInp === undefined) {
+      const FilteredTags = localStorage.getItem('filteredTags');
+      if (!FilteredTags) {
+        getOptionsUstensils(recipes);
+        openSuggestionsUstensil();
+      } else {
+        getOptionsUstensils(FilteredTags);
+        openSuggestionsUstensil();
+      }
     } else {
       const filteredUstensil = JSON.parse(localStorage.getItem('Repository'));
       getOptionsUstensils(filteredUstensil);

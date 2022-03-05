@@ -127,8 +127,14 @@ function handleInputAppliance() {
   if (userInput === undefined) {
     const searchInp = searchInput.value;
     if (searchInp === undefined) {
-      getOptionsAppliances(recipes);
-      openSuggestionsAppliance();
+      const FilteredTags = localStorage.getItem('filteredTags');
+      if (!FilteredTags) {
+        getOptionsAppliances(recipes);
+        openSuggestionsAppliance();
+      } else {
+        getOptionsAppliances(FilteredTags);
+        openSuggestionsAppliance();
+      }
     } else {
       const filteredAppliance = JSON.parse(
         localStorage.getItem('filteredAppliance')

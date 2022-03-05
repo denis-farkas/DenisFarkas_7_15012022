@@ -103,36 +103,34 @@ export function testFilter() {
 }
 
 export function searchTags(item) {
-  const lastRecipes = getCollection();
+  const lastRecipes = recipes;
   const filteredTags = [];
 
-  for (let i = 0; i < lastRecipes.length; i += 1) {
-    const ingredientArray = [];
-    const count = [];
+  lastRecipes.forEach((element) => {
+    const propertiesArray = new Set();
+    const result = [];
+    element.ingredients.forEach((component) => {
+      propertiesArray.add(component.ingredient.toUpperCase());
+    });
+    element.ustensils.forEach((component) => {
+      propertiesArray.add(component.toUpperCase());
+    });
 
-    for (let j = 0; j < lastRecipes[i].ingredients.length; j += 1) {
-      ingredientArray.push(
-        lastRecipes[i].ingredients[j].ingredient.toUpperCase()
-      );
-    }
+    propertiesArray.add(element.appliance.toUpperCase());
 
-    ingredientArray.push(lastRecipes[i].appliance.toUpperCase());
-
-    for (let j = 0; j < lastRecipes[i].ustensils.length; j += 1) {
-      ingredientArray.push(lastRecipes[i].ustensils[j].toUpperCase());
-    }
-
-    for (let k = 0; k < item.length; k += 1) {
-      const value = item[k].toUpperCase();
-      if (ingredientArray.includes(value)) {
-        count[k] = 'true';
-      } else {
-        count[k] = 'false';
+    item.forEach((component) => {
+      const value = component.toUpperCase();
+      const isCorrect = propertiesArray.has(value);
+      if (isCorrect) {
+        result.push(isCorrect);
       }
+    });
+
+    if (item.length === result.length) {
+      filteredTags.push(element);
     }
-    if (!count.includes('false')) {
-      filteredTags.push(lastRecipes[i]);
-    }
-  }
+  });
+
+  localStorage.setItem('Repository', JSON.stringify(filteredTags));
   return filteredTags;
 }

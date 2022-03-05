@@ -125,11 +125,17 @@ function openSuggestionsIngredient() {
 
 export function handleInputIngredient() {
   const userInput = searchInputIngredient.value;
-  if (!userInput) {
+  if (userInput === undefined) {
     const searchInp = searchInput.value;
-    if (!searchInp) {
-      getOptionsIngredients(recipes);
-      openSuggestionsIngredient();
+    if (searchInp === undefined) {
+      const FilteredTags = localStorage.getItem('filteredTags');
+      if (!FilteredTags) {
+        getOptionsIngredients(recipes);
+        openSuggestionsIngredient();
+      } else {
+        getOptionsIngredients(FilteredTags);
+        openSuggestionsIngredient();
+      }
     } else {
       const filteredIngredient = JSON.parse(localStorage.getItem('Repository'));
       getOptionsIngredients(filteredIngredient);
