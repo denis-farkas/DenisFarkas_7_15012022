@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import {
   suggestionsAppliance,
   autocompleteAppliance,
@@ -6,6 +7,9 @@ import {
 } from './selectors.js';
 
 import recipes from '../data/recipes.js';
+
+import { closeSuggestionsIngredient } from './ingredientFunctions.js';
+import { closeSuggestionsUstensil } from './ustensilFunctions.js';
 
 export function getAppliances(collection) {
   const applianceArray = new Set();
@@ -27,15 +31,20 @@ export function getOptionsAppliances(collection) {
   suggestionsAppliance.innerHTML = '';
 
   const factor = applianceArray.size / 10;
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsAppliance.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
-  } else if (factor > 1 && factor <= 2) {
+  } else if (factor <= 2) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.add('various2');
   } else {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.add('various3');
     suggestionsAppliance.classList.add('toomuch');
   }
@@ -82,15 +91,20 @@ export function searchAppliance(filter) {
 
   const factor = filteredApplianceArray.size / 10;
 
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsAppliance.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
   } else if (factor <= 2) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.add('various2');
   } else {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.add('various3');
     suggestionsAppliance.classList.add('toomuch');
   }
@@ -109,20 +123,28 @@ export function searchAppliance(filter) {
   });
 }
 
-function closeSuggestionsAppliance() {
+export function closeSuggestionsAppliance() {
   searchInputAppliance.value = '';
+  searchInputAppliance.placeholder = 'Appareils';
+  searchInputAppliance.classList.remove('neutre');
+  autocompleteAppliance.classList.add('strict');
   suggestionsAppliance.hidden = true; // hide popup
   autocompleteAppliance.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
   window.removeEventListener('click', closeSuggestionsAppliance); // don't need this anymore once it's closed
   // searchInput.focus(); // focus should stay on the input
 }
-function openSuggestionsAppliance() {
+export function openSuggestionsAppliance() {
+  closeSuggestionsIngredient();
+  closeSuggestionsUstensil();
+  searchInputAppliance.placeholder = 'Recherche un appareil';
+  autocompleteAppliance.classList.remove('strict');
+  searchInputAppliance.classList.add('neutre');
   suggestionsAppliance.hidden = false; // show popup
   autocompleteAppliance.setAttribute('aria-expanded', true); // tell assistive tech popup is shown
   window.addEventListener('click', closeSuggestionsAppliance); // clicking the body should close the popup
 }
 
-function handleInputAppliance() {
+export function handleInputAppliance() {
   const userInput = searchInputAppliance.value;
   if (userInput === undefined) {
     const searchInp = searchInput.value;
@@ -147,10 +169,3 @@ function handleInputAppliance() {
     openSuggestionsAppliance(); // show the suggestions if the user typed something
   }
 }
-
-searchInputAppliance.addEventListener('input', handleInputAppliance);
-
-document.getElementById('applianceB').addEventListener('click', (event) => {
-  handleInputAppliance(event);
-  event.stopPropagation();
-});

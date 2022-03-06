@@ -1,3 +1,4 @@
+/* eslint-disable import/extensions */
 import {
   suggestionsUstensil,
   autocompleteUstensil,
@@ -27,19 +28,23 @@ export function getOptionsUstensils(collection) {
   suggestionsUstensil.innerHTML = '';
 
   const factor = ustensilArray.size / 10;
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsUstensil.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
-  } else if (factor > 1 && factor <= 2) {
+  } else if (factor <= 2) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.add('various2');
   } else {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.add('various3');
     suggestionsUstensil.classList.add('toomuch');
   }
-
   ustensilArray.forEach((element) => {
     const li = document.createElement('li');
     li.id = `option-${element}`;
@@ -79,15 +84,20 @@ export function searchUstensil(filter) {
 
   const factor = filteredUstensilArray.size / 10;
 
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsUstensil.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
   } else if (factor <= 2) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.add('various2');
   } else {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.add('various3');
     suggestionsUstensil.classList.add('toomuch');
   }
@@ -103,19 +113,25 @@ export function searchUstensil(filter) {
   });
 }
 
-function closeSuggestionsUstensil() {
+export function closeSuggestionsUstensil() {
   searchInputUstensil.value = '';
+  searchInputUstensil.placeholder = 'Ustensiles';
+  searchInputUstensil.classList.remove('neutre');
+  autocompleteUstensil.classList.add('strict');
   suggestionsUstensil.hidden = true; // hide popup
   autocompleteUstensil.setAttribute('aria-expanded', false);
   window.removeEventListener('click', closeSuggestionsUstensil);
 }
-function openSuggestionsUstensil() {
+export function openSuggestionsUstensil() {
+  searchInputUstensil.placeholder = 'Recherche un ustensile';
+  searchInputUstensil.classList.add('neutre');
+  autocompleteUstensil.classList.remove('strict');
   suggestionsUstensil.hidden = false; // show popup
   autocompleteUstensil.setAttribute('aria-expanded', true);
   window.addEventListener('click', closeSuggestionsUstensil);
 }
 
-function handleInputUstensil() {
+export function handleInputUstensil() {
   const userInput = searchInputUstensil.value;
   if (userInput === undefined) {
     const searchInp = searchInput.value;
@@ -138,10 +154,3 @@ function handleInputUstensil() {
     openSuggestionsUstensil(); // show the suggestions if the user typed something
   }
 }
-
-searchInputUstensil.addEventListener('input', handleInputUstensil);
-
-document.getElementById('ustensilB').addEventListener('click', (event) => {
-  handleInputUstensil(event);
-  event.stopPropagation();
-});

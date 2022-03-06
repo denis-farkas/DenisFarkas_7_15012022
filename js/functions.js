@@ -7,7 +7,7 @@ import {
 } from './selectors.js';
 
 import { getOptionsIngredients } from './ingredientFunctions.js';
-import { getOptionsAppliances } from './applianceFuntions.js';
+import { getOptionsAppliances } from './applianceFunctions.js';
 import { getOptionsUstensils } from './ustensilFunctions.js';
 
 import cardRecipeFactory from './factory/cardRecipe.js';
