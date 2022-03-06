@@ -35,15 +35,20 @@ function searchAppliance(filter) {
 
   const factor = applianceFiltered.length / 10;
 
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsAppliance.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.remove('various2');
   } else if (factor <= 2) {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.remove('toomuch');
     suggestionsAppliance.classList.remove('various3');
     suggestionsAppliance.classList.add('various2');
   } else {
+    suggestionsAppliance.classList.remove('displayOff');
     suggestionsAppliance.classList.add('various3');
     suggestionsAppliance.classList.add('toomuch');
   }
@@ -64,12 +69,18 @@ function searchAppliance(filter) {
 
 function closeSuggestionsAppliance() {
   searchInputAppliance.value = '';
+  searchInputAppliance.placeholder = 'Appareils';
+  searchInputAppliance.classList.remove('neutre');
+  autocompleteAppliance.classList.add('strict');
   suggestionsAppliance.hidden = true; // hide popup
   autocompleteAppliance.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
   window.removeEventListener('click', closeSuggestionsAppliance); // don't need this anymore once it's closed
   // searchInput.focus(); // focus should stay on the input
 }
 function openSuggestionsAppliance() {
+  searchInputAppliance.placeholder = 'Recherche un appareil';
+  autocompleteAppliance.classList.remove('strict');
+  searchInputAppliance.classList.add('neutre');
   suggestionsAppliance.hidden = false; // show popup
   autocompleteAppliance.setAttribute('aria-expanded', true); // tell assistive tech popup is shown
   window.addEventListener('click', closeSuggestionsAppliance); // clicking the body should close the popup
@@ -77,9 +88,9 @@ function openSuggestionsAppliance() {
 
 function handleInputAppliance() {
   const userInput = searchInputAppliance.value;
-  if (!userInput) {
+  if (userInput === undefined) {
     const searchInp = searchInput.value;
-    if (!searchInp) {
+    if (searchInp === undefined) {
       if (!localStorage.getItem('filteredTags')) {
         getOptionsAppliance(recipes);
         openSuggestionsAppliance();

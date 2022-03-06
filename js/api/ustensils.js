@@ -34,15 +34,20 @@ function searchUstensil(filter) {
   }
 
   const factor = ustensilFiltered.length / 10;
-  if (factor <= 1) {
+  if (factor === 0) {
+    suggestionsUstensil.classList.add('displayOff');
+  } else if (factor <= 1) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.remove('various2');
   } else if (factor <= 2) {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.remove('toomuch');
     suggestionsUstensil.classList.remove('various3');
     suggestionsUstensil.classList.add('various2');
   } else {
+    suggestionsUstensil.classList.remove('displayOff');
     suggestionsUstensil.classList.add('various3');
     suggestionsUstensil.classList.add('toomuch');
   }
@@ -60,11 +65,17 @@ function searchUstensil(filter) {
 
 function closeSuggestionsUstensil() {
   searchInputUstensil.value = '';
+  searchInputUstensil.placeholder = 'Ustensiles';
+  searchInputUstensil.classList.remove('neutre');
+  autocompleteUstensil.classList.add('strict');
   suggestionsUstensil.hidden = true; // hide popup
   autocompleteUstensil.setAttribute('aria-expanded', false);
   window.removeEventListener('click', closeSuggestionsUstensil);
 }
 function openSuggestionsUstensil() {
+  searchInputUstensil.placeholder = 'Recherche un ustensile';
+  searchInputUstensil.classList.add('neutre');
+  autocompleteUstensil.classList.remove('strict');
   suggestionsUstensil.hidden = false; // show popup
   autocompleteUstensil.setAttribute('aria-expanded', true);
   window.addEventListener('click', closeSuggestionsUstensil);
@@ -72,9 +83,9 @@ function openSuggestionsUstensil() {
 
 function handleInputUstensil() {
   const userInput = searchInputUstensil.value;
-  if (!userInput) {
+  if (userInput === undefined) {
     const searchInp = searchInput.value;
-    if (!searchInp) {
+    if (searchInp === undefined) {
       if (!localStorage.getItem('filteredTags')) {
         getOptionsUstensils(recipes);
         openSuggestionsUstensil();
