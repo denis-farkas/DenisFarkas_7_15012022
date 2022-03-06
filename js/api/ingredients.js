@@ -74,7 +74,7 @@ function closeSuggestionsIngredient() {
   searchInputIngredient.classList.remove('neutre');
   autocompleteIngredient.classList.add('strict');
   suggestionsIngredient.hidden = true; // hide popup
-  // autocompleteIngredient.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
+  autocompleteIngredient.setAttribute('aria-expanded', false); // tell assistive tech popup is hidden
   window.removeEventListener('click', closeSuggestionsIngredient); // don't need this anymore once it's closed
 }
 function openSuggestionsIngredient() {
@@ -82,7 +82,7 @@ function openSuggestionsIngredient() {
   searchInputIngredient.classList.add('neutre');
   suggestionsIngredient.hidden = false; // show popup
   autocompleteIngredient.classList.remove('strict');
-  // autocompleteIngredient.setAttribute('aria-expanded', true); // tell assistive tech popup is shown
+  autocompleteIngredient.setAttribute('aria-expanded', true); // tell assistive tech popup is shown
   window.addEventListener('click', closeSuggestionsIngredient); // clicking the body should close the popup
 }
 

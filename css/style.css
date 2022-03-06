@@ -126,14 +126,15 @@ ul {
   max-width: 667px;
   max-height: 407px;
   margin-right: 30px;
+  border-radius: 5px;
 }
 
 .autocomplete label {
   display: flex;
   align-items: center;
   height: 4.31rem;
-  border-radius: 5px;
   color: #fff;
+  border-radius: 5px;
 }
 
 .ingredient {

@@ -25,9 +25,11 @@
         <div class="filters row">
             <div
             id="autocompleteIngredient"
-            class="autocomplete strict ingredient"
+            class="autocomplete strict"
+            role="combobox"
+            aria-expanded="false"
             >
-                <div for="searchInputIngredient" class="ingredient" id="ingredientB">
+                <label for="searchInputIngredient" class="ingredient" id="ingredientB">
                     <input
                     id="searchInputIngredient"
                     class="searchInput ingredient"
@@ -37,7 +39,7 @@
                     <button class="filterButton ingredient">
                         <i class="fa fa-angle-down"></i>
                     </button>
-                </div>      
+                </label>      
                 <ul
                     role="listbox"
                     id="suggestionsIngredient"
@@ -51,6 +53,7 @@
             id="autocompleteAppliance"
             class="autocomplete strict"
             role="combobox"
+            aria-expanded="false"
             >
                 <label for="searchInputAppliance" class="appliance" id="applianceB">
                     <input
@@ -76,6 +79,7 @@
             id="ustensil"
             class="autocomplete strict"
             role="combobox"
+            aria-expanded="false"
             >
                 <label for="searchInputUstensil" class="ustensil" id="ustensilB">
                     <input
