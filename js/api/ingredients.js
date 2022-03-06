@@ -87,29 +87,25 @@ function openSuggestionsIngredient() {
 }
 
 function handleInputIngredient() {
-  let repository;
   const userInput = searchInputIngredient.value;
   if (userInput === undefined) {
     const searchInp = searchInput.value;
     if (searchInp === undefined) {
-      if (localStorage.getItem('badges') === null) {
-        repository = setCollection();
-        getOptionsIngredients(repository);
+      if (!localStorage.getItem('filteredTags')) {
+        getOptionsIngredients(recipes);
         openSuggestionsIngredient();
       } else {
-        repository = getCollection();
-        getOptionsIngredients(repository);
+        getOptionsIngredients(filteredTags);
         openSuggestionsIngredient();
       }
     } else {
-      repository = getCollection();
-      getOptionsIngredients(repository);
+      const filteredIngredient = JSON.parse(localStorage.getItem('Repository'));
+      getOptionsIngredients(filteredIngredient);
       openSuggestionsIngredient();
     }
   } else {
-    repository = getCollection();
-    searchIngredient(userInput, repository);
-    openSuggestionsIngredient();
+    searchIngredient(userInput);
+    openSuggestionsIngredient(); // show the suggestions if the user typed something
   }
 }
 

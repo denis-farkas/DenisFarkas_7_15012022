@@ -60,7 +60,7 @@ function closeIcon(item) {
 }
 
 function searchTags(item) {
-  const lastRecipes = JSON.parse(localStorage.getItem('Repository'));
+  const lastRecipes = recipes;
   const filteredTags = [];
 
   for (let i = 0; i < lastRecipes.length; i += 1) {
