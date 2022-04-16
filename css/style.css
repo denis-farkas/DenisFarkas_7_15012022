@@ -174,9 +174,9 @@ ul {
   color: rgba(255, 255, 255, 0.692);
 }
 
-.searchInput:focus::placeholder {
+/*.searchInput:focus::placeholder {
   color: transparent;
-}
+}*/
 
 .autocomplete[aria-expanded='true'] label i {
   transform: rotate(-180deg) translate(0%, 0%);
