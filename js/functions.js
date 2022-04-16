@@ -103,10 +103,10 @@ export function testFilter() {
 }
 
 export function searchTags(item) {
-  const lastRecipes = recipes;
+  const filteredRecipes = localStorage.getItem('Repository');
   const filteredTags = [];
 
-  lastRecipes.forEach((element) => {
+  filteredRecipes.forEach((element) => {
     const propertiesArray = new Set();
     const result = [];
     element.ingredients.forEach((component) => {
